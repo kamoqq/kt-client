@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "jshint index.js ./lib",
-    "test": "mocha ./test"
+    "test": "NODE_ENV=test YOURPACKAGE_COVERAGE=1 mocha --require blanket --reporter mocha-lcov-reporter ./test | coveralls"
   },
   "repository": {
     "type": "git",
@@ -21,9 +21,12 @@
   },
   "homepage": "https://github.com/kamoqq/kt-client",
   "devDependencies": {
+    "blanket": "^1.1.7",
     "chai": "^2.3.0",
+    "coveralls": "^2.11.2",
     "jshint": "^2.7.0",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "mocha-lcov-reporter": "0.0.2"
   },
   "dependencies": {
     "bl": "^0.9.4"

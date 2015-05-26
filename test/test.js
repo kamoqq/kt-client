@@ -20,8 +20,8 @@ describe('kt-client', function() {
     it('should be done successfull', function(done) {
       exec('ktremotemgr set test_key test_value', function () {
         client.get('test_key', function(error, value) {
-          expect(value).should.equal('test_value');
-          expect(error).should.be.undefined;
+          expect(value).to.equal('test_value');
+          expect(error).to.be.undefined;
           done();
         });
       });

@@ -26,3 +26,5 @@ before_install:
   - ./configure
   - make
   - sudo make install
+  # start kyototycoon
+  - /user/local/bin/ktserver

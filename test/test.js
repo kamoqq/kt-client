@@ -1,12 +1,10 @@
 /*global describe, it, before */
 'use strict';
 
-var chai = require('chai');
+var expect = require('chai').expect;
 var exec = require('child_process').exec;
 
 var KyotoTocoon = require('../index');
-
-chai.should();
 
 describe('kt-client', function() {
   describe('get test', function() {
@@ -22,8 +20,8 @@ describe('kt-client', function() {
     it('should be done successfull', function(done) {
       exec('ktremotemgr set test_key test_value', function () {
         client.get('test_key', function(error, value) {
-          value.should.equal('test_value');
-          error.should.be.undefined;
+          expect(value).should.equal('test_value');
+          expect(error).should.be.undefined;
           done();
         });
       });

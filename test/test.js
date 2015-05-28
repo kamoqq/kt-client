@@ -25,13 +25,14 @@ describe('kt-client', function() {
         });
       });
     });
-    
+
     it('data and expiration time', function(done) {
       exec('ktremotemgr set -xt 300 test_key test_value', function () {
         var client = new KyotoTocoon();
         client.get('test_key', function(error, value, expire) {
           expect(value).to.equal('test_value');
           expect(expire).to.be.undefined;
+          expect(error).to.be.undefined;
           done();
         });
       });

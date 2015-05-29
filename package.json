@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "pretest": "jshint index.js ./lib",
-    "test": "mocha ./test"
+    "test": "NODE_ENV=test YOURPACKAGE_COVERAGE=1 mocha --require blanket --reporter mocha-lcov-reporter ./test | coveralls; mocha ./test"
   },
   "config": {
     "blanket": {

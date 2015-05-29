@@ -61,7 +61,7 @@ describe('kt-client', function() {
         var client = new KyotoTocoon();
         client.get('test_key', function(error, value, expire) {
           expect(value).to.equal('test_value');
-          expect(expire).to.be.undefined;
+          expect(expire).to.be.an.instanceof(Date);
           expect(error).to.be.undefined;
           done();
         });
@@ -78,5 +78,14 @@ describe('kt-client', function() {
       });
     });
 
+    it('connection error', function(done) {
+      var client = new KyotoTocoon();
+      client.get('test_key', function(error, value, expire) {
+        expect(value).to.be.null;
+        expect(expire).to.be.null;
+        expect(error).to.equal('Connection error');
+        done();
+      });
+    });
   });
 });

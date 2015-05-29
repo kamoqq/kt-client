@@ -79,7 +79,10 @@ describe('kt-client', function() {
     });
 
     it('connection error', function(done) {
-      var client = new KyotoTocoon();
+      var client = new KyotoTocoon({
+        host: localhost,
+        port: 9999
+      });
       client.get('test_key', function(error, value, expire) {
         expect(value).to.be.null;
         expect(expire).to.be.null;

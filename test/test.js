@@ -42,7 +42,7 @@ describe('kt-client', function() {
     });
 
     it('binary data', function(done) {
-      exec('ktremotemgr set test_key ｂｉｎａｒｙ', function () {
+      exec('ktremotemgr set test_key binary', function () {
         var client = new KyotoTocoon();
         var options = {
           encoding: 'binary'
@@ -71,8 +71,8 @@ describe('kt-client', function() {
     it('no data', function(done) {
       var client = new KyotoTocoon();
       client.get('test_key', function(error, value, expire) {
-        expect(value).to.be.null;
-        expect(expire).to.be.null;
+        expect(value).to.be.undefined;
+        expect(expire).to.be.undefined;
         expect(error).to.equal('No record was found');
         done();
       });
@@ -84,8 +84,8 @@ describe('kt-client', function() {
         port: 9999
       });
       client.get('test_key', function(error, value, expire) {
-        expect(value).to.be.null;
-        expect(expire).to.be.null;
+        expect(value).to.be.undefined;
+        expect(expire).to.be.undefined;
         expect(error).to.equal('Connection error');
         done();
       });

@@ -91,4 +91,84 @@ describe('kt-client', function() {
       });
     });
   });
+
+  describe('set test', function() {
+    beforeEach(function(done) {
+      exec('ktremotemgr clear', function () {
+        done();
+      });
+    });
+
+    it('data', function(done) {
+      var client = new KyotoTocoon();
+      client.set('test_key', 'test_value', function(error) {
+        expect(error).to.be.undefined;
+        client.get('test_key', function(error, value, expire) {
+          expect(value).to.equal('test_value');
+          expect(expire).to.be.null;
+          expect(error).to.be.undefined;
+          done();
+        });
+      });
+    });
+
+    it('utf-8 data', function(done) {
+      var client = new KyotoTocoon();
+      var options = {
+        encoding: 'utf8'
+      };
+      client.set('test_key', 'test_value', options, function(error) {
+        expect(error).to.be.undefined;
+        client.get('test_key', options, function(error, value, expire) {
+          expect(value).to.equal('test_value');
+          expect(expire).to.be.null;
+          expect(error).to.be.undefined;
+          done();
+        });
+      });
+    });
+
+    it('binary data', function(done) {
+      var client = new KyotoTocoon();
+      var options = {
+        encoding: 'binary'
+      };
+      client.set('test_key', 'test_value', options, function(error) {
+        expect(error).to.be.undefined;
+        client.get('test_key', options, function(error, value, expire) {
+          expect(value).to.equal('test_value');
+          expect(expire).to.be.null;
+          expect(error).to.be.undefined;
+          done();
+        });
+      });
+    });
+
+    it('data and expiration time', function(done) {
+      var client = new KyotoTocoon();
+      var options = {
+        expire: 300
+      };
+      client.set('test_key', 'test_value', options, function(error) {
+        expect(error).to.be.undefined;
+        client.get('test_key', function(error, value, expire) {
+          expect(value).to.equal('test_value');
+          expect(expire).to.be.an.instanceof(Date);
+          expect(error).to.be.undefined;
+          done();
+        });
+      });
+    });
+
+    it('connection error', function(done) {
+      var client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+      client.set('test_key', 'test_value', function(error) {
+        expect(error).to.equal('Connection error');
+        done();
+      });
+    });
+  });
 });

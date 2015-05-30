@@ -42,7 +42,7 @@ describe('kt-client', function() {
     });
 
     it('binary data', function(done) {
-      exec('ktremotemgr set test_key test_value', function () {
+      exec('ktremotemgr set test_key ｂｉｎａｒｙ', function () {
         var client = new KyotoTocoon();
         var options = {
           encoding: 'binary'
@@ -80,7 +80,7 @@ describe('kt-client', function() {
 
     it('connection error', function(done) {
       var client = new KyotoTocoon({
-        host: localhost,
+        host: 'localhost',
         port: 9999
       });
       client.get('test_key', function(error, value, expire) {

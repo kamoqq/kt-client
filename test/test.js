@@ -189,4 +189,117 @@ describe('kt-client', function() {
       });
     });
   });
+
+  describe('add test', function() {
+    beforeEach(function(done) {
+      exec('ktremotemgr clear', function () {
+        done();
+      });
+    });
+
+    it('data', function(done) {
+      var client = new KyotoTocoon();
+      client.add('test_key', 'test_value', function(error) {
+        expect(error).to.be.undefined;
+        client.get('test_key', function(error, value, expire) {
+          expect(value).to.equal('test_value');
+          expect(expire).to.be.null;
+          expect(error).to.be.undefined;
+          done();
+        });
+      });
+    });
+
+    it('already exists', function(done) {
+      var client = new KyotoTocoon();
+      client.set('test_key', 'foo', function(error) {
+        client.add('test_key', 'test_value', function(error) {
+          expect(error).to.equal('Connection error');
+          client.get('test_key', function(error, value) {
+            expect(value).to.equal('foo');
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  describe('replace test', function() {
+    beforeEach(function(done) {
+      exec('ktremotemgr clear', function () {
+        done();
+      });
+    });
+
+    it('data', function(done) {
+      var client = new KyotoTocoon();
+      client.set('test_key', 'foo', function() {
+        client.replace('test_key', 'test_value', function(error) {
+          expect(error).to.be.undefined;
+          client.get('test_key', function(error, value) {
+            expect(value).to.equal('test_value');
+            expect(error).to.be.undefined;
+            done();
+          });
+        });
+      });
+    });
+
+    it('not exists', function(done) {
+      var client = new KyotoTocoon();
+      client.set('test_key', 'foo', function() {
+        client.add('test_key', 'test_value', function(error) {
+          expect(error).to.equal('Connection error');
+          client.get('test_key', function(error, value) {
+            expect(value).to.equal('foo');
+            done();
+          });
+        });
+      });
+    });
+  });
+
+  describe('remove test', function() {
+    beforeEach(function(done) {
+      exec('ktremotemgr clear', function () {
+        done();
+      });
+    });
+
+    it('data', function(done) {
+      var client = new KyotoTocoon();
+      client.set('test_key', 'test_value', function() {
+        client.get('test_key', function(error, value) {
+          expect(value).to.equal('test_value');
+          client.remove('test_key', function(error) {
+            expect(error).to.be.undefined;
+            client.get('test_key', function(error, value) {
+              expect(value).to.be.undefined;
+              expect(error).to.be.undefined;
+              done();
+            });
+          });
+        });
+      });
+    });
+
+    it('not exists', function(done) {
+      var client = new KyotoTocoon();
+      client.remove('test_key', function(error) {
+        expect(error).to.equal('No record was found');
+        done();
+      });
+    });
+
+    it('connection error', function(done) {
+      var client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+      client.remove('test_key', function(error) {
+        expect(error).to.equal('Connection error');
+        done();
+      });
+    });
+  });
 });

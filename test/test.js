@@ -275,7 +275,7 @@ describe('kt-client', function() {
             expect(error).to.be.undefined;
             client.get('test_key', function(error, value) {
               expect(value).to.be.undefined;
-              expect(error).to.be.undefined;
+              expect(error).to.equal('No record was found');
               done();
             });
           });

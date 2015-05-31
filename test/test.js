@@ -130,13 +130,14 @@ describe('kt-client', function() {
 
     it('binary data', function(done) {
       var client = new KyotoTocoon();
+      var testValue = new Buffer('test_value');
       var options = {
         encoding: 'binary'
       };
-      client.set('test_key', 'test_value', options, function(error) {
+      client.set('test_key', testValue, options, function(error) {
         expect(error).to.be.undefined;
         client.get('test_key', options, function(error, value, expire) {
-          expect(value).to.equal('test_value');
+          expect(value).to.equal(testValue);
           expect(expire).to.be.null;
           expect(error).to.be.undefined;
           done();

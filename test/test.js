@@ -134,9 +134,11 @@ describe('kt-client', function() {
       var options = {
         encoding: 'binary'
       };
+      console.log(testValue);
       client.set('test_key', testValue, options, function(error) {
         expect(error).to.be.undefined;
         client.get('test_key', options, function(error, value, expire) {
+          console.log(value);
           expect(value).to.equal(testValue);
           expect(expire).to.be.null;
           expect(error).to.be.undefined;

@@ -153,7 +153,7 @@ describe('kt-client', function() {
       client.set('test_key', 'test_value', options, function(error) {
         expect(error).to.be.undefined;
         client.get('test_key', function(error, value, expire) {
-          expect(value.to.equal('test_value');
+          expect(value.to.equal('test_value'));
           expect(expire).to.be.an.instanceof(Date);
           expect(error).to.be.undefined;
           done();

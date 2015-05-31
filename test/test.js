@@ -146,6 +146,22 @@ describe('kt-client', function() {
       });
     });
 
+    it('object data', function(done) {
+      var client = new KyotoTocoon();
+      var testValue = {
+        key: 'test_value'
+      };
+      client.set('test_key', testValue, function(error) {
+        expect(error).to.be.undefined;
+        client.get('test_key', function(error, value, expire) {
+          expect(JSON.parse(value)).to.equal(testValue);
+          expect(expire).to.be.null;
+          expect(error).to.be.undefined;
+          done();
+        });
+      });
+    });
+
     it('data and expiration time', function(done) {
       var client = new KyotoTocoon();
       var options = {

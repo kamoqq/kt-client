@@ -154,7 +154,7 @@ describe('kt-client', function() {
       client.set('test_key', testValue, function(error) {
         expect(error).to.be.undefined;
         client.get('test_key', function(error, value, expire) {
-          expect(JSON.parse(value)).to.equal(testValue);
+          expect(JSON.parse(value)).to.deep.equal(testValue);
           expect(expire).to.be.null;
           expect(error).to.be.undefined;
           done();

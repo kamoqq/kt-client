@@ -1,6 +1,6 @@
 {
   "name": "kt-client",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "KyotoTycoon client for Node.js",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   "keywords": [
     "KyotoTycoon"
   ],
-  "author": "kamqq",
+  "author": "kamoqq",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kamoqq/kt-client/issues"

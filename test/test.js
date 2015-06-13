@@ -27,6 +27,21 @@ describe('kt-client', function() {
       });
     });
 
+    it('specify DB', function(done) {
+      exec('ktremotemgr set -db blue test_key test_value', function () {
+        var client = new KyotoTocoon();
+        var options = {
+          db: 'blue'
+        };
+        client.get('test_key', options, function(error, value, expire) {
+          expect(value).to.equal('test_value');
+          expect(expire).to.be.null;
+          expect(error).to.be.undefined;
+          done();
+        });
+      });
+    });
+
     it('utf-8 data', function(done) {
       exec('ktremotemgr set test_key test_value', function () {
         var client = new KyotoTocoon();
@@ -109,6 +124,27 @@ describe('kt-client', function() {
           expect(expire).to.be.null;
           expect(error).to.be.undefined;
           done();
+        });
+      });
+    });
+
+    it('specify DB', function(done) {
+      var client = new KyotoTocoon();
+      var options = {
+        db: 'blue'
+      };
+      client.set('test_key', 'test_value', options, function(error) {
+        expect(error).to.be.undefined;
+        client.get('test_key', function(error, value, expire) {
+          expect(value).to.be.undefined;
+          expect(expire).to.be.undefined;
+          expect(error).to.equal('No record was found');
+          client.get('test_key', options, function(error, value, expire) {
+            expect(value).to.equal('test_value');
+            expect(expire).to.be.null;
+            expect(error).to.be.undefined;
+            done();
+          });
         });
       });
     });
@@ -274,6 +310,27 @@ describe('kt-client', function() {
           client.remove('test_key', function(error) {
             expect(error).to.be.undefined;
             client.get('test_key', function(error, value) {
+              expect(value).to.be.undefined;
+              expect(error).to.equal('No record was found');
+              done();
+            });
+          });
+        });
+      });
+    });
+
+    it('specify DB', function(done) {
+      var client = new KyotoTocoon();
+      var options = {
+        db: 'blue'
+      };
+      client.set('test_key', 'test_value', options, function(error) {
+        expect(error).to.be.undefined;
+        client.get('test_key', options, function(error, value) {
+          expect(value).to.equal('test_value');
+          client.remove('test_key', options, function(error) {
+            expect(error).to.be.undefined;
+            client.get('test_key', options, function(error, value) {
               expect(value).to.be.undefined;
               expect(error).to.equal('No record was found');
               done();

@@ -30,4 +30,4 @@ before_install:
   - sudo sh -c "echo '/usr/local/lib' >> /etc/ld.so.conf.d/libc.conf"
   - sudo ldconfig
   # start kyototycoon
-  - /usr/local/bin/ktserver -host localhost -port 1978 -dmn red.kch blue.kch
+  - /usr/local/bin/ktserver -host localhost -port 1978 -dmn red#type=% blue#type=*

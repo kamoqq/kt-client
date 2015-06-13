@@ -28,10 +28,10 @@ describe('kt-client', function() {
     });
 
     it('specify DB', function(done) {
-      exec('ktremotemgr set -db blue.kch test_key test_value', function () {
+      exec('ktremotemgr set -db blue test_key test_value', function () {
         var client = new KyotoTocoon();
         var options = {
-          db: 'blue.kch'
+          db: 'blue'
         };
         client.get('test_key', options, function(error, value, expire) {
           expect(value).to.equal('test_value');
@@ -131,7 +131,7 @@ describe('kt-client', function() {
     it('specify DB', function(done) {
       var client = new KyotoTocoon();
       var options = {
-        db: 'blue.kch'
+        db: 'blue'
       };
       client.set('test_key', 'test_value', options, function(error) {
         expect(error).to.be.undefined;
@@ -322,7 +322,7 @@ describe('kt-client', function() {
     it('specify DB', function(done) {
       var client = new KyotoTocoon();
       var options = {
-        db: 'blue.kch'
+        db: 'blue'
       };
       client.set('test_key', 'test_value', options, function(error) {
         expect(error).to.be.undefined;

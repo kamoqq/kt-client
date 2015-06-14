@@ -44,8 +44,8 @@ kt.get('foo', function(error, value) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.get('foo', function(error) {
-  console.log(value);
+kt.set('foo', 'bar', function(error) {
+  console.log(error);
 });
 ```
 
@@ -57,8 +57,8 @@ kt.get('foo', function(error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.get('foo', function(error) {
-  console.log(value);
+kt.add('foo', 'bar', function(error) {
+  console.log(error);
 });
 ```
 
@@ -70,8 +70,8 @@ kt.get('foo', function(error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.get('foo', function(error) {
-  console.log(value);
+kt.replace('foo', 'bar', function(error) {
+  console.log(error);
 });
 ```
 
@@ -81,8 +81,8 @@ kt.get('foo', function(error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.get('foo', function(error) {
-  console.log(value);
+kt.remove('foo', function(error) {
+  console.log(error);
 });
 ```
 

@@ -4,13 +4,19 @@
   "description": "KyotoTycoon client for Node.js",
   "main": "index.js",
   "scripts": {
-    "pretest": "jshint index.js ./lib",
+    "pretest": "eslint index.js ./lib",
     "test": "NODE_ENV=test YOURPACKAGE_COVERAGE=1 mocha --require blanket --reporter mocha-lcov-reporter ./test | coveralls; mocha ./test"
   },
   "config": {
     "blanket": {
-      "pattern": ["index.js", "lib"],
-      "data-cover-never": ["node_modules", "test"]
+      "pattern": [
+        "index.js",
+        "lib"
+      ],
+      "data-cover-never": [
+        "node_modules",
+        "test"
+      ]
     }
   },
   "repository": {
@@ -30,7 +36,8 @@
     "blanket": "^1.1.7",
     "chai": "^2.3.0",
     "coveralls": "^2.11.2",
-    "jshint": "^2.7.0",
+    "eslint": "^1.8.0",
+    "eslint-config-airbnb": "^0.1.0",
     "mocha": "^2.2.5",
     "mocha-lcov-reporter": "0.0.2"
   },

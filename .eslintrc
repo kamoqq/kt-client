@@ -9,6 +9,7 @@
     "func-names": 0,
     "one-var": 0,
     "vars-on-top": 0,
+    "id-length": 0,
     "strict": [2, "global"]
   }
 }

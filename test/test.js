@@ -32,7 +32,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('specify DB', async function(done) {
+    it('specify DB', async (done) => {
       await new Promise((resolve) => {
         exec('ktremotemgr set -db blue test_key test_value', resolve);
       });
@@ -50,7 +50,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('utf-8 data', async function(done) {
+    it('utf-8 data', async (done) => {
       await new Promise((resolve) => {
         exec('ktremotemgr set test_key test_value', resolve);
       });
@@ -68,7 +68,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('binary data', async function(done) {
+    it('binary data', async (done) => {
       await new Promise((resolve) => {
         exec('ktremotemgr set test_key binary', resolve);
       });
@@ -86,12 +86,13 @@ describe('kt-client', () => {
       });
     });
 
-    it('data and expiration time', async function(done) {
+    it('data and expiration time', async (done) => {
       await new Promise((resolve) => {
         exec('ktremotemgr set -xt 300 test_key test_value', resolve);
       });
 
       let client = new KyotoTocoon();
+
       client.get('test_key', (error, value, expire) => {
         assert(value === 'test_value');
         assert(expire instanceof Date);
@@ -100,8 +101,9 @@ describe('kt-client', () => {
       });
     });
 
-    it('no data', function(done) {
+    it('no data', (done) => {
       let client = new KyotoTocoon();
+
       client.get('test_key', (error, value, expire) => {
         assert(typeof value === 'undefined');
         assert(typeof expire === 'undefined');
@@ -110,11 +112,12 @@ describe('kt-client', () => {
       });
     });
 
-    it('connection error', function(done) {
+    it('connection error', (done) => {
       let client = new KyotoTocoon({
         host: 'localhost',
         port: 9999
       });
+
       client.get('test_key', (error, value, expire) => {
         assert(typeof value === 'undefined');
         assert(typeof expire === 'undefined');
@@ -124,15 +127,16 @@ describe('kt-client', () => {
     });
   });
 
-  describe('set test', function() {
+  describe('set test', () => {
     beforeEach((done) => {
       exec('ktremotemgr clear', () => {
         done();
       });
     });
 
-    it('data', async function(done) {
+    it('data', async (done) => {
       let client = new KyotoTocoon();
+
       await new Promise((resolve) => {
         client.set('test_key', 'test_value', (error) => {
           assert(typeof error === 'undefined');
@@ -140,7 +144,7 @@ describe('kt-client', () => {
         });
       });
 
-      client.get('test_key', function(error, value, expire) {
+      client.get('test_key', (error, value, expire) => {
         assert(value === 'test_value');
         assert(expire === null);
         assert(typeof error === 'undefined');
@@ -148,7 +152,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('specify DB', async function(done) {
+    it('specify DB', async (done) => {
       let client = new KyotoTocoon();
       let options = {
         db: 'blue'
@@ -165,7 +169,7 @@ describe('kt-client', () => {
         client.get('test_key', (error, value, expire) => {
           assert(typeof value === 'undefined');
           assert(typeof expire === 'undefined');
-          assert(error).to.equal('No record was found');
+          assert(error === 'No record was found');
           resolve();
         });
       });
@@ -178,7 +182,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('utf-8 data', async function(done) {
+    it('utf-8 data', async (done) => {
       let client = new KyotoTocoon();
       let options = {
         encoding: 'utf8'
@@ -199,7 +203,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('binary data', async function(done) {
+    it('binary data', async (done) => {
       let client = new KyotoTocoon();
       let testValue = new Buffer('test_value');
       let options = {
@@ -221,7 +225,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('object data', async function(done) {
+    it('object data', async (done) => {
       let client = new KyotoTocoon();
       let testValue = {
         key: 'test_value'
@@ -242,7 +246,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('data and expiration time', async function(done) {
+    it('data and expiration time', async (done) => {
       let client = new KyotoTocoon();
       let options = {
         expire: 300
@@ -263,7 +267,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('connection error', function(done) {
+    it('connection error', (done) => {
       let client = new KyotoTocoon({
         host: 'localhost',
         port: 9999
@@ -276,14 +280,14 @@ describe('kt-client', () => {
     });
   });
 
-  describe('add test', function() {
+  describe('add test', () => {
     beforeEach((done) => {
       exec('ktremotemgr clear', () => {
         done();
       });
     });
 
-    it('data', async function(done) {
+    it('data', async (done) => {
       let client = new KyotoTocoon();
 
       await new Promise((resolve) => {
@@ -301,7 +305,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('already exists', async function(done) {
+    it('already exists', async (done) => {
       let client = new KyotoTocoon();
 
       await new Promise((resolve) => {
@@ -324,14 +328,14 @@ describe('kt-client', () => {
     });
   });
 
-  describe('replace test', function() {
+  describe('replace test', () => {
     beforeEach((done) => {
       exec('ktremotemgr clear', () => {
         done();
       });
     });
 
-    it('data', async function(done) {
+    it('data', async (done) => {
       let client = new KyotoTocoon();
 
       await new Promise((resolve) => {
@@ -354,7 +358,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('not exists', async function(done) {
+    it('not exists', async (done) => {
       let client = new KyotoTocoon();
 
       await new Promise((resolve) => {
@@ -377,14 +381,14 @@ describe('kt-client', () => {
     });
   });
 
-  describe('remove test', function() {
+  describe('remove test', () => {
     beforeEach((done) => {
       exec('ktremotemgr clear', () => {
         done();
       });
     });
 
-    it('data', async function(done) {
+    it('data', async (done) => {
       let client = new KyotoTocoon();
 
       await new Promise((resolve) => {
@@ -414,7 +418,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('specify DB', async function(done) {
+    it('specify DB', async (done) => {
       let client = new KyotoTocoon();
       let options = {
         db: 'blue'
@@ -448,7 +452,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('not exists', function(done) {
+    it('not exists', (done) => {
       let client = new KyotoTocoon();
 
       client.remove('test_key', (error) => {
@@ -457,7 +461,7 @@ describe('kt-client', () => {
       });
     });
 
-    it('connection error', function(done) {
+    it('connection error', (done) => {
       let client = new KyotoTocoon({
         host: 'localhost',
         port: 9999

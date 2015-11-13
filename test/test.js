@@ -1,5 +1,7 @@
 'use strict';
 
+require('babel-polyfill');
+
 import assert from 'power-assert';
 import childProcess from 'child_process';
 var expect = require('chai').expect;
@@ -16,19 +18,21 @@ describe('kt-client', () => {
       });
     });
 
-    it('data', async (done) => {
-      await new Promise((resolve) => {
-        exec('ktremotemgr set test_key test_value', resolve);
-      });
+    it('data', function(done) {
+      (async function() {
+        await new Promise((resolve) => {
+          exec('ktremotemgr set test_key test_value', resolve);
+        });
 
-      let client = new KyotoTocoon();
+        let client = new KyotoTocoon();
 
-      client.get('test_key', (error, value, expire) => {
-        assert(value === 'test_value');
-        assert(expire === null);
-        assert(typeof error === 'undefined');
-        done();
-      });
+        client.get('test_key', (error, value, expire) => {
+          assert(value === 'test_value');
+          assert(expire === null);
+          assert(typeof error === 'undefined');
+          done();
+        });
+      })();
     });
 
     it('specify DB', function(done) {

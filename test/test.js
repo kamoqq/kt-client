@@ -1,34 +1,38 @@
-/*global describe, it, beforeEach*/
-/*jshint expr: true*/
 'use strict';
 
+import assert from 'power-assert';
+import childProcess from 'child_process';
 var expect = require('chai').expect;
-var exec = require('child_process').exec;
 
-var KyotoTocoon = require('../index');
+let exec = childProcess.exec;
 
-describe('kt-client', function() {
-  describe('get test', function() {
-    beforeEach(function(done) {
-      exec('ktremotemgr clear', function () {
+import KyotoTocoon from '../index';
+
+describe('kt-client', () => {
+  describe('get test', () => {
+    beforeEach((done) => {
+      exec('ktremotemgr clear', () => {
         done();
       });
     });
 
-    it('data', function(done) {
-      exec('ktremotemgr set test_key test_value', function () {
-        var client = new KyotoTocoon();
-        client.get('test_key', function(error, value, expire) {
-          expect(value).to.equal('test_value');
-          expect(expire).to.be.null;
-          expect(error).to.be.undefined;
-          done();
-        });
+    it('data', async (done) => {
+      await new Promise((resolve) => {
+        exec('ktremotemgr set test_key test_value', resolve);
+      });
+
+      let client = new KyotoTocoon();
+
+      client.get('test_key', (error, value, expire) => {
+        assert(value === 'test_value');
+        assert(expire === null);
+        assert(typeof error === 'undefined');
+        done();
       });
     });
 
     it('specify DB', function(done) {
-      exec('ktremotemgr set -db blue test_key test_value', function () {
+      exec('ktremotemgr set -db blue test_key test_value', function() {
         var client = new KyotoTocoon();
         var options = {
           db: 'blue'
@@ -43,7 +47,7 @@ describe('kt-client', function() {
     });
 
     it('utf-8 data', function(done) {
-      exec('ktremotemgr set test_key test_value', function () {
+      exec('ktremotemgr set test_key test_value', function() {
         var client = new KyotoTocoon();
         var options = {
           encoding: 'utf8'
@@ -58,7 +62,7 @@ describe('kt-client', function() {
     });
 
     it('binary data', function(done) {
-      exec('ktremotemgr set test_key binary', function () {
+      exec('ktremotemgr set test_key binary', function() {
         var client = new KyotoTocoon();
         var options = {
           encoding: 'binary'
@@ -73,7 +77,7 @@ describe('kt-client', function() {
     });
 
     it('data and expiration time', function(done) {
-      exec('ktremotemgr set -xt 300 test_key test_value', function () {
+      exec('ktremotemgr set -xt 300 test_key test_value', function() {
         var client = new KyotoTocoon();
         client.get('test_key', function(error, value, expire) {
           expect(value).to.equal('test_value');
@@ -110,7 +114,7 @@ describe('kt-client', function() {
 
   describe('set test', function() {
     beforeEach(function(done) {
-      exec('ktremotemgr clear', function () {
+      exec('ktremotemgr clear', function() {
         done();
       });
     });
@@ -228,7 +232,7 @@ describe('kt-client', function() {
 
   describe('add test', function() {
     beforeEach(function(done) {
-      exec('ktremotemgr clear', function () {
+      exec('ktremotemgr clear', function() {
         done();
       });
     });
@@ -262,7 +266,7 @@ describe('kt-client', function() {
 
   describe('replace test', function() {
     beforeEach(function(done) {
-      exec('ktremotemgr clear', function () {
+      exec('ktremotemgr clear', function() {
         done();
       });
     });
@@ -297,7 +301,7 @@ describe('kt-client', function() {
 
   describe('remove test', function() {
     beforeEach(function(done) {
-      exec('ktremotemgr clear', function () {
+      exec('ktremotemgr clear', function() {
         done();
       });
     });

@@ -506,4 +506,38 @@ describe('kt-client', () => {
       });
     });
   });
+
+  describe('matchPrefix test', () => {
+    beforeEach((done) => {
+      exec('ktremotemgr clear', () => {
+        done();
+      });
+    });
+
+    it('match', async (done) => {
+      await new Promise((resolve) => {
+        exec('ktremotemgr set test_key1 test_value', resolve);
+      });
+
+      await new Promise((resolve) => {
+        exec('ktremotemgr set test_key2 test_value', resolve);
+      });
+
+      await new Promise((resolve) => {
+        exec('ktremotemgr set foo test_value', resolve);
+      });
+
+      let client = new KyotoTocoon();
+
+      client.matchPrefix('test', (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 2);
+        assert(data.includes('test_key1'));
+        assert(data.includes('test_key2'));
+        assert(!data.includes('foo'));
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+  });
 });

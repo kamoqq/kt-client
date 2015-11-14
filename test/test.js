@@ -486,8 +486,8 @@ describe('kt-client', () => {
 
       client.report((error, data) => {
         assert(typeof data === 'object');
-        assert(data.hasOwnProperty('db_total_count'));
-        assert(data.db_total_count === '0');
+        assert(data.hasOwnProperty('conf_os_name'));
+        assert(data.conf_os_name === 'Linux');
         assert(typeof error === 'undefined');
         done();
       });

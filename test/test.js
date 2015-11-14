@@ -484,7 +484,7 @@ describe('kt-client', () => {
     it('success', (done) => {
       let client = new KyotoTocoon();
 
-      client.report('test_key', (error, data) => {
+      client.report((error, data) => {
         assert(typeof data === 'object');
         assert(data.hasOwnProperty('repl_master_port'));
         assert(data.repl_master_port === '1978');
@@ -499,7 +499,7 @@ describe('kt-client', () => {
         port: 9999
       });
 
-      client.report('test_key', (error, data) => {
+      client.report((error, data) => {
         assert(typeof data === 'undefined');
         assert(error === 'Connection error');
         done();

@@ -86,5 +86,33 @@ kt.remove('foo', function(error) {
 });
 ```
 
+### kt.report(callback)
+
+* `callback`: **Function** the callback
+
+```javascript
+kt.report(function(error, data) {
+  for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+      console.log('key: ' + key + ', value: ' data[key]);      
+    }
+  }
+});
+```
+
+### kt.matchPrefix(key, callback)
+
+* `prefix`: **String** the prefix string
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.matchPrefix('foo', function(error, data) {
+  for (var i = 0; i < data.length; ++i) {
+    console.log(data[i]);
+  }
+});
+```
+
 ## License
 [MIT](https://github.com/kamoqq/kt-client/blob/master/LICENSE)

@@ -13,13 +13,13 @@ npm install kt-client
 ## Setting up the client
 
 ```javascript
-var KyotoTocoon = require('kt-client');
-var kt = new KyotoTocoon(options);
+var KyotoTycoon = require('kt-client');
+var kt = new KyotoTycoon(options);
 ```
 
 ### Options
 
-* `host`: **String** KyotoTocoon server
+* `host`: **String** KyotoTycoon server
 * `port`: **Number** port number
 
 ## API

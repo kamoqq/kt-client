@@ -486,8 +486,8 @@ describe('kt-client', () => {
 
       client.report((error, data) => {
         assert(typeof data === 'object');
-        assert(data.hasOwnProperty('repl_master_port'));
-        assert(data.repl_master_port === '1978');
+        assert(data.hasOwnProperty('db_total_count'));
+        assert(data.db_total_count === '0');
         assert(typeof error === 'undefined');
         done();
       });

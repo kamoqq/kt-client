@@ -1,16 +1,22 @@
 {
   "name": "kt-client",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "KyotoTycoon client for Node.js",
   "main": "index.js",
   "scripts": {
-    "pretest": "jshint index.js ./lib",
-    "test": "NODE_ENV=test YOURPACKAGE_COVERAGE=1 mocha --require blanket --reporter mocha-lcov-reporter ./test | coveralls; mocha ./test"
+    "pretest": "eslint index.js ./lib ./test",
+    "test": "NODE_ENV=test YOURPACKAGE_COVERAGE=1 mocha --compilers js:espower-babel/guess --require blanket --reporter mocha-lcov-reporter ./test | coveralls; mocha --compilers js:espower-babel/guess ./test"
   },
   "config": {
     "blanket": {
-      "pattern": ["index.js", "lib"],
-      "data-cover-never": ["node_modules", "test"]
+      "pattern": [
+        "index.js",
+        "lib"
+      ],
+      "data-cover-never": [
+        "node_modules",
+        "test"
+      ]
     }
   },
   "repository": {
@@ -27,12 +33,20 @@
   },
   "homepage": "https://github.com/kamoqq/kt-client",
   "devDependencies": {
+    "babel-core": "^6.1.21",
+    "babel-eslint": "^4.1.5",
+    "babel-plugin-syntax-async-functions": "^6.1.18",
+    "babel-plugin-transform-regenerator": "^6.1.18",
+    "babel-polyfill": "^6.1.19",
+    "babel-preset-es2015": "^6.1.18",
     "blanket": "^1.1.7",
-    "chai": "^2.3.0",
     "coveralls": "^2.11.2",
-    "jshint": "^2.7.0",
+    "eslint": "^1.9.0",
+    "eslint-config-airbnb": "^0.1.0",
+    "espower-babel": "^4.0.0",
     "mocha": "^2.2.5",
-    "mocha-lcov-reporter": "0.0.2"
+    "mocha-lcov-reporter": "0.0.2",
+    "power-assert": "^1.1.0"
   },
   "dependencies": {
     "bl": "^0.9.4"

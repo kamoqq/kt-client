@@ -13,13 +13,13 @@ npm install kt-client
 ## Setting up the client
 
 ```javascript
-var KyotoTocoon = require('kt-client');
-var kt = new KyotoTocoon(options);
+var KyotoTycoon = require('kt-client');
+var kt = new KyotoTycoon(options);
 ```
 
 ### Options
 
-* `host`: **String** KyotoTocoon server
+* `host`: **String** KyotoTycoon server
 * `port`: **Number** port number
 
 ## API
@@ -83,6 +83,34 @@ kt.replace('foo', 'bar', function(error) {
 ```javascript
 kt.remove('foo', function(error) {
   console.log(error);
+});
+```
+
+### kt.report(callback)
+
+* `callback`: **Function** the callback
+
+```javascript
+kt.report(function(error, data) {
+  for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+      console.log('key: ' + key + ', value: ' data[key]);      
+    }
+  }
+});
+```
+
+### kt.matchPrefix(key, callback)
+
+* `prefix`: **String** the prefix string
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.matchPrefix('foo', function(error, data) {
+  for (var i = 0; i < data.length; ++i) {
+    console.log(data[i]);
+  }
 });
 ```
 

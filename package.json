@@ -4,7 +4,7 @@
   "description": "KyotoTycoon client for Node.js",
   "main": "index.js",
   "scripts": {
-    "pretest": "eslint index.js ./lib",
+    "pretest": "eslint index.js ./lib ./test",
     "test": "NODE_ENV=test YOURPACKAGE_COVERAGE=1 mocha --compilers js:espower-babel/guess --require blanket --reporter mocha-lcov-reporter ./test | coveralls; mocha --compilers js:espower-babel/guess ./test"
   },
   "config": {

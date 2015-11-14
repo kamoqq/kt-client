@@ -473,4 +473,37 @@ describe('kt-client', () => {
       });
     });
   });
+
+  describe('report test', () => {
+    beforeEach((done) => {
+      exec('ktremotemgr clear', () => {
+        done();
+      });
+    });
+
+    it('success', (done) => {
+      let client = new KyotoTocoon();
+
+      client.report('test_key', (error, data) => {
+        assert(typeof data === 'object');
+        assert(data.hasOwnProperty('repl_master_port'));
+        assert(data.repl_master_port === '1978');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      let client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.report('test_key', (error, data) => {
+        assert(typeof data === 'undefined');
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
 });

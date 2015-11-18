@@ -712,7 +712,7 @@ describe('kt-client', () => {
       let options = {
         db: 'blue'
       };
-      client.matchRegex('.', options, (error, data) => {
+      client.matchRegex('^test', options, (error, data) => {
         assert(data instanceof Array);
         assert(data.length === 1);
         assert(data.includes('test_key1'));
@@ -746,7 +746,7 @@ describe('kt-client', () => {
       let options = {
         max: 2
       };
-      client.matchRegex('test', options, (error, data) => {
+      client.matchRegex('^test', options, (error, data) => {
         assert(data instanceof Array);
         assert(data.length === 2);
         assert(typeof error === 'undefined');

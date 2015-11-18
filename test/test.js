@@ -677,7 +677,7 @@ describe('kt-client', () => {
         });
       });
 
-      client.matchRegex('test_key\\d', (error, data) => {
+      client.matchRegex('test_key\\[0-9]', (error, data) => {
         assert(data instanceof Array);
         assert(data.length === 2);
         assert(data.includes('test_key1'));

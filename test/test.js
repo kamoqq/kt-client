@@ -474,6 +474,35 @@ describe('kt-client', () => {
     });
   });
 
+  describe('void test', () => {
+    beforeEach((done) => {
+      exec('ktremotemgr clear', () => {
+        done();
+      });
+    });
+
+    it('success', (done) => {
+      let client = new KyotoTocoon();
+
+      client.void((error) => {
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      let client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.void((error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
   describe('report test', () => {
     beforeEach((done) => {
       exec('ktremotemgr clear', () => {

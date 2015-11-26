@@ -503,6 +503,37 @@ describe('kt-client', () => {
     });
   });
 
+  describe('echo test', () => {
+    beforeEach((done) => {
+      exec('ktremotemgr clear', () => {
+        done();
+      });
+    });
+
+    it('success', (done) => {
+      let client = new KyotoTocoon();
+
+      client.echo({foo: 'bar'}, (error, ret) => {
+        assert(typeof ret.foo !== 'undefined');
+        assert(ret.foo === 'bar');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      let client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.echo({foo: 'bar'}, (error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
   describe('report test', () => {
     beforeEach((done) => {
       exec('ktremotemgr clear', () => {

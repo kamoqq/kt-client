@@ -86,6 +86,27 @@ kt.remove('foo', function(error) {
 });
 ```
 
+### kt.void(callback)
+
+* `callback`: **Function** the callback
+
+```javascript
+kt.void(function(error) {
+  console.log(error);
+});
+```
+
+### kt.echo(callback)
+
+* `params`: **Object** arbitrary records
+* `callback`: **Function** the callback
+
+```javascript
+kt.echo({foo: 'bar'}, function(error, data) {
+  console.log(data.foo);  // => bar
+});
+```
+
 ### kt.report(callback)
 
 * `callback`: **Function** the callback
@@ -108,6 +129,20 @@ kt.report(function(error, data) {
 
 ```javascript
 kt.matchPrefix('foo', function(error, data) {
+  for (var i = 0; i < data.length; ++i) {
+    console.log(data[i]);
+  }
+});
+```
+
+### kt.matchRegex(key, callback)
+
+* `regex`: **String** the regular expression string
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.matchRegex('foo.*', function(error, data) {
   for (var i = 0; i < data.length; ++i) {
     console.log(data[i]);
   }

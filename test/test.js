@@ -474,6 +474,66 @@ describe('kt-client', () => {
     });
   });
 
+  describe('void test', () => {
+    beforeEach((done) => {
+      exec('ktremotemgr clear', () => {
+        done();
+      });
+    });
+
+    it('success', (done) => {
+      let client = new KyotoTocoon();
+
+      client.void((error) => {
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      let client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.void((error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
+  describe('echo test', () => {
+    beforeEach((done) => {
+      exec('ktremotemgr clear', () => {
+        done();
+      });
+    });
+
+    it('success', (done) => {
+      let client = new KyotoTocoon();
+
+      client.echo({foo: 'bar'}, (error, ret) => {
+        assert(typeof ret.foo !== 'undefined');
+        assert(ret.foo === 'bar');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      let client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.echo({foo: 'bar'}, (error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
   describe('report test', () => {
     beforeEach((done) => {
       exec('ktremotemgr clear', () => {
@@ -642,6 +702,148 @@ describe('kt-client', () => {
       });
 
       client.matchPrefix('test', (error, data) => {
+        assert(typeof data === 'undefined');
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
+  describe('matchRegex test', () => {
+    beforeEach((done) => {
+      exec('ktremotemgr clear', () => {
+        done();
+      });
+    });
+
+    it('match', async (done) => {
+      let client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('foo', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      client.matchRegex('^test_key[0-9]', (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 2);
+        assert(data.includes('test_key1'));
+        assert(data.includes('test_key2'));
+        assert(!data.includes('foo'));
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('match DB option', async (done) => {
+      let client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        let options = {
+          db: 'blue'
+        };
+        client.set('test_key1', 'test_value', options, () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        let options = {
+          db: 'red'
+        };
+        client.set('test_key2', 'test_value', options, () => {
+          resolve();
+        });
+      });
+
+      let options = {
+        db: 'blue'
+      };
+      client.matchRegex('^test_key[0-9]', options, (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 1);
+        assert(data.includes('test_key1'));
+        assert(!data.includes('test_key2'));
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('match max option', async (done) => {
+      let client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key3', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      let options = {
+        max: 2
+      };
+      client.matchRegex('^test_key[0-9]', options, (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 2);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('no match', async (done) => {
+      let client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      client.matchRegex('foo', (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 0);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      let client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.matchRegex('test', (error, data) => {
         assert(typeof data === 'undefined');
         assert(error === 'Connection error');
         done();

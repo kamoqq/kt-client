@@ -1,6 +1,6 @@
 {
   "name": "kt-client",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "KyotoTycoon client for Node.js",
   "main": "index.js",
   "scripts": {
@@ -39,16 +39,16 @@
     "babel-plugin-transform-regenerator": "^6.1.18",
     "babel-polyfill": "^6.1.19",
     "babel-preset-es2015": "^6.1.18",
-    "blanket": "^1.1.7",
+    "blanket": "1.1.9",
     "coveralls": "^2.11.2",
-    "eslint": "^1.9.0",
+    "eslint": "^1.10.2",
     "eslint-config-airbnb": "^0.1.0",
     "espower-babel": "^4.0.0",
-    "mocha": "^2.2.5",
+    "mocha": "^2.3.3",
     "mocha-lcov-reporter": "0.0.2",
     "power-assert": "^1.1.0"
   },
   "dependencies": {
-    "bl": "^0.9.4"
+    "bl": "^1.0.0"
   }
 }

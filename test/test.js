@@ -76,7 +76,7 @@ describe('kt-client', () => {
 
       client.get('test_key', options, (error, value, expire) => {
         assert(Buffer.isBuffer(value));
-        assert(Buffer.toString() === 'test_value');
+        assert(value.toString() === 'test_value');
         assert(expire === null);
         assert(typeof error === 'undefined');
         done();

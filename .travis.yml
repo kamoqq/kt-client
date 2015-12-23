@@ -13,6 +13,7 @@ before_install:
   - wget http://fallabs.com/kyotocabinet/pkg/kyotocabinet-1.2.76.tar.gz
   - tar zxvf kyotocabinet-1.2.76.tar.gz
   - cd kyotocabinet-1.2.76
+  - export CFLAGS=-mno-avx
   - ./configure
   - make
   - sudo make install
@@ -21,6 +22,7 @@ before_install:
   - wget http://fallabs.com/kyototycoon/pkg/kyototycoon-0.9.56.tar.gz
   - tar zxvf kyototycoon-0.9.56.tar.gz
   - cd kyototycoon-0.9.56
+  - export CFLAGS=-mno-avx
   - ./configure
   - make
   - sudo make install

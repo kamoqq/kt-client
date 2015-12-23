@@ -3,10 +3,6 @@
 require('babel-polyfill');
 
 import assert from 'power-assert';
-import childProcess from 'child_process';
-
-const exec = childProcess.exec;
-
 import KyotoTocoon from '../index';
 
 describe('kt-client', () => {
@@ -17,11 +13,11 @@ describe('kt-client', () => {
     });
 
     it('data', async (done) => {
-      await new Promise((resolve) => {
-        exec('/usr/local/bin/ktremotemgr set test_key test_value', resolve);
-      });
-
       const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', resolve);
+      });
 
       client.get('test_key', (error, value, expire) => {
         assert(value === 'test_value');
@@ -32,14 +28,14 @@ describe('kt-client', () => {
     });
 
     it('specify DB', async (done) => {
-      await new Promise((resolve) => {
-        exec('/usr/local/bin/ktremotemgr set -db blue test_key test_value', resolve);
-      });
-
       const client = new KyotoTocoon();
       const options = {
         db: 'blue'
       };
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', options, resolve);
+      });
 
       client.get('test_key', options, (error, value, expire) => {
         assert(value === 'test_value');
@@ -50,14 +46,14 @@ describe('kt-client', () => {
     });
 
     it('utf-8 data', async (done) => {
-      await new Promise((resolve) => {
-        exec('/usr/local/bin/ktremotemgr set test_key test_value', resolve);
-      });
-
       const client = new KyotoTocoon();
       const options = {
         encoding: 'utf8'
       };
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', resolve);
+      });
 
       client.get('test_key', options, (error, value, expire) => {
         assert(value === 'test_value');
@@ -68,17 +64,19 @@ describe('kt-client', () => {
     });
 
     it('binary data', async (done) => {
-      await new Promise((resolve) => {
-        exec('/usr/local/bin/ktremotemgr set test_key binary', resolve);
-      });
-
       const client = new KyotoTocoon();
+      const testValue = new Buffer('test_value');
       const options = {
         encoding: 'binary'
       };
 
+      await new Promise((resolve) => {
+        client.set('test_key', testValue, options, resolve);
+      });
+
       client.get('test_key', options, (error, value, expire) => {
         assert(Buffer.isBuffer(value));
+        assert(Buffer.toString() === 'test_value');
         assert(expire === null);
         assert(typeof error === 'undefined');
         done();
@@ -86,11 +84,14 @@ describe('kt-client', () => {
     });
 
     it('data and expiration time', async (done) => {
-      await new Promise((resolve) => {
-        exec('/usr/local/bin/ktremotemgr set -xt 300 test_key test_value', resolve);
-      });
-
       const client = new KyotoTocoon();
+      const options = {
+        expire: 300
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', options, resolve);
+      });
 
       client.get('test_key', (error, value, expire) => {
         assert(value === 'test_value');

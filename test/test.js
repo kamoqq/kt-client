@@ -5,21 +5,21 @@ require('babel-polyfill');
 import assert from 'power-assert';
 import childProcess from 'child_process';
 
-let exec = childProcess.exec;
+const exec = childProcess.exec;
 
 import KyotoTocoon from '../index';
 
 describe('kt-client', () => {
   describe('get test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      exec('/usr/local/bin/ktremotemgr clear', () => {
         done();
       });
     });
 
     it('data', async (done) => {
       await new Promise((resolve) => {
-        exec('ktremotemgr set test_key test_value', resolve);
+        exec('/usr/local/bin/ktremotemgr set test_key test_value', resolve);
       });
 
       let client = new KyotoTocoon();
@@ -34,7 +34,7 @@ describe('kt-client', () => {
 
     it('specify DB', async (done) => {
       await new Promise((resolve) => {
-        exec('ktremotemgr set -db blue test_key test_value', resolve);
+        exec('/usr/local/bin/ktremotemgr set -db blue test_key test_value', resolve);
       });
 
       let client = new KyotoTocoon();
@@ -52,7 +52,7 @@ describe('kt-client', () => {
 
     it('utf-8 data', async (done) => {
       await new Promise((resolve) => {
-        exec('ktremotemgr set test_key test_value', resolve);
+        exec('/usr/local/bin/ktremotemgr set test_key test_value', resolve);
       });
 
       let client = new KyotoTocoon();
@@ -70,7 +70,7 @@ describe('kt-client', () => {
 
     it('binary data', async (done) => {
       await new Promise((resolve) => {
-        exec('ktremotemgr set test_key binary', resolve);
+        exec('/usr/local/bin/ktremotemgr set test_key binary', resolve);
       });
 
       let client = new KyotoTocoon();
@@ -88,7 +88,7 @@ describe('kt-client', () => {
 
     it('data and expiration time', async (done) => {
       await new Promise((resolve) => {
-        exec('ktremotemgr set -xt 300 test_key test_value', resolve);
+        exec('/usr/local/bin/ktremotemgr set -xt 300 test_key test_value', resolve);
       });
 
       let client = new KyotoTocoon();
@@ -129,7 +129,7 @@ describe('kt-client', () => {
 
   describe('set test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      exec('/usr/local/bin/ktremotemgr clear', () => {
         done();
       });
     });
@@ -282,7 +282,7 @@ describe('kt-client', () => {
 
   describe('add test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      exec('/usr/local/bin/ktremotemgr clear', () => {
         done();
       });
     });
@@ -330,7 +330,7 @@ describe('kt-client', () => {
 
   describe('replace test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      exec('/usr/local/bin/ktremotemgr clear', () => {
         done();
       });
     });
@@ -383,7 +383,7 @@ describe('kt-client', () => {
 
   describe('remove test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      exec('/usr/local/bin/ktremotemgr clear', () => {
         done();
       });
     });
@@ -476,7 +476,7 @@ describe('kt-client', () => {
 
   describe('void test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      exec('/usr/local/bin/ktremotemgr clear', () => {
         done();
       });
     });
@@ -505,7 +505,7 @@ describe('kt-client', () => {
 
   describe('echo test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      exec('/usr/local/bin/ktremotemgr clear', () => {
         done();
       });
     });
@@ -536,7 +536,7 @@ describe('kt-client', () => {
 
   describe('report test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      exec('/usr/local/bin/ktremotemgr clear', () => {
         done();
       });
     });
@@ -569,7 +569,7 @@ describe('kt-client', () => {
 
   describe('matchPrefix test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      exec('/usr/local/bin/ktremotemgr clear', () => {
         done();
       });
     });
@@ -711,7 +711,7 @@ describe('kt-client', () => {
 
   describe('matchRegex test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      exec('/usr/local/bin/ktremotemgr clear', () => {
         done();
       });
     });

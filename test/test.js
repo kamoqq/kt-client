@@ -507,7 +507,7 @@ describe('kt-client', () => {
     it('success', (done) => {
       const client = new KyotoTocoon();
 
-      client.echo({foo: 'bar'}, (error, ret) => {
+      client.echo({ foo: 'bar' }, (error, ret) => {
         assert(typeof ret.foo !== 'undefined');
         assert(ret.foo === 'bar');
         assert(typeof error === 'undefined');
@@ -521,7 +521,7 @@ describe('kt-client', () => {
         port: 9999
       });
 
-      client.echo({foo: 'bar'}, (error) => {
+      client.echo({ foo: 'bar' }, (error) => {
         assert(error === 'Connection error');
         done();
       });

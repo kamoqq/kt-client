@@ -566,7 +566,7 @@ describe('kt-client', () => {
       client.clear(done);
     });
 
-    it('clear', (done) => {
+    it('clear', async (done) => {
       const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
@@ -574,7 +574,7 @@ describe('kt-client', () => {
       });
 
       await new Promise((resolve) => {
-        client.get('test_key', (error, value, expire) => {
+        client.get('test_key', (error, value) => {
           assert(value === 'test_value');
           resolve();
         });
@@ -587,7 +587,7 @@ describe('kt-client', () => {
         });
       });
 
-      client.get('test_key', (error, value, expire) => {
+      client.get('test_key', (error, value) => {
         assert(typeof value === 'undefined');
         assert(error === 'No record was found');
         done();

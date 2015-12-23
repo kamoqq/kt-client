@@ -12,9 +12,8 @@ import KyotoTocoon from '../index';
 describe('kt-client', () => {
   describe('get test', () => {
     beforeEach((done) => {
-      exec('/usr/local/bin/ktremotemgr clear', () => {
-        done();
-      });
+      const client = new KyotoTocoon();
+      client.clear(done);
     });
 
     it('data', async (done) => {
@@ -129,9 +128,8 @@ describe('kt-client', () => {
 
   describe('set test', () => {
     beforeEach((done) => {
-      exec('/usr/local/bin/ktremotemgr clear', () => {
-        done();
-      });
+      const client = new KyotoTocoon();
+      client.clear(done);
     });
 
     it('data', async (done) => {
@@ -282,9 +280,8 @@ describe('kt-client', () => {
 
   describe('add test', () => {
     beforeEach((done) => {
-      exec('/usr/local/bin/ktremotemgr clear', () => {
-        done();
-      });
+      const client = new KyotoTocoon();
+      client.clear(done);
     });
 
     it('data', async (done) => {
@@ -330,9 +327,8 @@ describe('kt-client', () => {
 
   describe('replace test', () => {
     beforeEach((done) => {
-      exec('/usr/local/bin/ktremotemgr clear', () => {
-        done();
-      });
+      const client = new KyotoTocoon();
+      client.clear(done);
     });
 
     it('data', async (done) => {
@@ -383,9 +379,8 @@ describe('kt-client', () => {
 
   describe('remove test', () => {
     beforeEach((done) => {
-      exec('/usr/local/bin/ktremotemgr clear', () => {
-        done();
-      });
+      const client = new KyotoTocoon();
+      client.clear(done);
     });
 
     it('data', async (done) => {
@@ -476,9 +471,8 @@ describe('kt-client', () => {
 
   describe('void test', () => {
     beforeEach((done) => {
-      exec('/usr/local/bin/ktremotemgr clear', () => {
-        done();
-      });
+      const client = new KyotoTocoon();
+      client.clear(done);
     });
 
     it('success', (done) => {
@@ -505,9 +499,8 @@ describe('kt-client', () => {
 
   describe('echo test', () => {
     beforeEach((done) => {
-      exec('/usr/local/bin/ktremotemgr clear', () => {
-        done();
-      });
+      const client = new KyotoTocoon();
+      client.clear(done);
     });
 
     it('success', (done) => {
@@ -536,9 +529,8 @@ describe('kt-client', () => {
 
   describe('report test', () => {
     beforeEach((done) => {
-      exec('/usr/local/bin/ktremotemgr clear', () => {
-        done();
-      });
+      const client = new KyotoTocoon();
+      client.clear(done);
     });
 
     it('success', (done) => {
@@ -569,9 +561,8 @@ describe('kt-client', () => {
 
   describe('matchPrefix test', () => {
     beforeEach((done) => {
-      exec('/usr/local/bin/ktremotemgr clear', () => {
-        done();
-      });
+      const client = new KyotoTocoon();
+      client.clear(done);
     });
 
     it('match', async (done) => {
@@ -711,9 +702,8 @@ describe('kt-client', () => {
 
   describe('matchRegex test', () => {
     beforeEach((done) => {
-      exec('/usr/local/bin/ktremotemgr clear', () => {
-        done();
-      });
+      const client = new KyotoTocoon();
+      client.clear(done);
     });
 
     it('match', async (done) => {

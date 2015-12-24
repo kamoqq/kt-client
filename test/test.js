@@ -770,10 +770,17 @@ describe('kt-client', () => {
   });
 
   describe('matchPrefix test', () => {
-    beforeEach((done) => {
+    beforeEach(async (done) => {
       const client = new KyotoTocoon();
-      client.clear({ db: 'red' }, done);
-      client.clear({ db: 'blue' }, done);
+
+      await new Promise((resolve) => {
+        client.clear({ db: 'red' }, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.clear({ db: 'blue' }, resolve);
+      });
+
       client.clear(done);
     });
 

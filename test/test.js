@@ -713,7 +713,7 @@ describe('kt-client', () => {
       });
 
       client.check('test_key', (error, size, expire) => {
-        assert(typeof size !== 'undefined');
+        assert(typeof size === 'number');
         assert(typeof expire === 'undefined');
         assert(typeof error === 'undefined');
         done();
@@ -731,7 +731,7 @@ describe('kt-client', () => {
       });
 
       client.check('test_key', (error, size, expire) => {
-        assert(typeof size !== 'undefined');
+        assert(typeof size === 'number');
         assert(expire instanceof Date);
         assert(typeof error === 'undefined');
         done();
@@ -749,7 +749,7 @@ describe('kt-client', () => {
       });
 
       client.check('test_key', options, (error, size, expire) => {
-        assert(typeof size !== 'undefined');
+        assert(typeof size === 'number');
         assert(typeof expire === 'undefined');
         assert(typeof error === 'undefined');
         done();
@@ -762,7 +762,7 @@ describe('kt-client', () => {
         port: 9999
       });
 
-      client.check((error) => {
+      client.check('test_key', (error) => {
         assert(error === 'Connection error');
         done();
       });

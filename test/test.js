@@ -772,9 +772,9 @@ describe('kt-client', () => {
   describe('matchPrefix test', () => {
     beforeEach((done) => {
       const client = new KyotoTocoon();
-      client.clear(done);
       client.clear({ db: 'red' }, done);
       client.clear({ db: 'blue' }, done);
+      client.clear(done);
     });
 
     it('match', async (done) => {
@@ -807,23 +807,14 @@ describe('kt-client', () => {
       const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        const options = {
-          db: 'blue'
-        };
-        client.set('test_key1', 'test_value', options, resolve);
+        client.set('test_key1', 'test_value', { db: 'blue' }, resolve);
       });
 
       await new Promise((resolve) => {
-        const options = {
-          db: 'red'
-        };
-        client.set('test_key2', 'test_value', options, resolve);
+        client.set('test_key2', 'test_value', { db: 'red' }, resolve);
       });
 
-      const options = {
-        db: 'blue'
-      };
-      client.matchPrefix('test', options, (error, data) => {
+      client.matchPrefix('test', { db: 'blue' }, (error, data) => {
         assert(data instanceof Array);
         assert(data.length === 1);
         assert(data.includes('test_key1'));
@@ -837,21 +828,15 @@ describe('kt-client', () => {
       const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        client.set('test_key1', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key1', 'test_value', resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key2', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key2', 'test_value', resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key3', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key3', 'test_value', resolve);
       });
 
       const options = {
@@ -869,15 +854,11 @@ describe('kt-client', () => {
       const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        client.set('test_key1', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key1', 'test_value', resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key2', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key2', 'test_value', resolve);
       });
 
       client.matchPrefix('foo', (error, data) => {

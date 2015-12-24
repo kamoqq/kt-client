@@ -773,27 +773,23 @@ describe('kt-client', () => {
     beforeEach((done) => {
       const client = new KyotoTocoon();
       client.clear(done);
+      client.clear({ db: 'red' }, done);
+      client.clear({ db: 'blue' }, done);
     });
 
     it('match', async (done) => {
       const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        client.set('test_key1', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key1', 'test_value', resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key2', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key2', 'test_value', resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('foo', 'test_value', () => {
-          resolve();
-        });
+        client.set('foo', 'test_value', resolve);
       });
 
       client.matchPrefix('test', (error, data) => {
@@ -814,18 +810,14 @@ describe('kt-client', () => {
         const options = {
           db: 'blue'
         };
-        client.set('test_key1', 'test_value', options, () => {
-          resolve();
-        });
+        client.set('test_key1', 'test_value', options, resolve);
       });
 
       await new Promise((resolve) => {
         const options = {
           db: 'red'
         };
-        client.set('test_key2', 'test_value', options, () => {
-          resolve();
-        });
+        client.set('test_key2', 'test_value', options, resolve);
       });
 
       const options = {

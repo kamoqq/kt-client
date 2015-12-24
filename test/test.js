@@ -5,11 +5,24 @@ require('babel-polyfill');
 import assert from 'power-assert';
 import KyotoTocoon from '../index';
 
+async function clear(callback) {
+  const client = new KyotoTocoon();
+
+  await new Promise((resolve) => {
+    client.clear({ db: 'red' }, resolve);
+  });
+
+  await new Promise((resolve) => {
+    client.clear({ db: 'blue' }, resolve);
+  });
+
+  client.clear(callback);
+}
+
 describe('kt-client', () => {
   describe('get test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('data', async (done) => {
@@ -129,8 +142,7 @@ describe('kt-client', () => {
 
   describe('set test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('data', async (done) => {
@@ -281,8 +293,7 @@ describe('kt-client', () => {
 
   describe('add test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('data', async (done) => {
@@ -328,8 +339,7 @@ describe('kt-client', () => {
 
   describe('replace test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('data', async (done) => {
@@ -380,8 +390,7 @@ describe('kt-client', () => {
 
   describe('remove test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('data', async (done) => {
@@ -472,8 +481,7 @@ describe('kt-client', () => {
 
   describe('void test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('success', (done) => {
@@ -500,8 +508,7 @@ describe('kt-client', () => {
 
   describe('echo test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('success', (done) => {
@@ -530,8 +537,7 @@ describe('kt-client', () => {
 
   describe('report test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('success', (done) => {
@@ -562,8 +568,7 @@ describe('kt-client', () => {
 
   describe('status test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('status', (done) => {
@@ -620,8 +625,7 @@ describe('kt-client', () => {
 
   describe('clear test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('clear', async (done) => {
@@ -701,8 +705,7 @@ describe('kt-client', () => {
 
   describe('check test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('check', async (done) => {
@@ -770,18 +773,8 @@ describe('kt-client', () => {
   });
 
   describe('matchPrefix test', () => {
-    beforeEach(async (done) => {
-      const client = new KyotoTocoon();
-
-      await new Promise((resolve) => {
-        client.clear({ db: 'red' }, resolve);
-      });
-
-      await new Promise((resolve) => {
-        client.clear({ db: 'blue' }, resolve);
-      });
-
-      client.clear(done);
+    beforeEach((done) => {
+      clear(done);
     });
 
     it('match', async (done) => {
@@ -892,8 +885,7 @@ describe('kt-client', () => {
 
   describe('matchRegex test', () => {
     beforeEach((done) => {
-      const client = new KyotoTocoon();
-      client.clear(done);
+      clear(done);
     });
 
     it('match', async (done) => {

@@ -560,6 +560,64 @@ describe('kt-client', () => {
     });
   });
 
+  describe('status test', () => {
+    beforeEach((done) => {
+      const client = new KyotoTocoon();
+      client.clear(done);
+    });
+
+    it('status', (done) => {
+      const client = new KyotoTocoon();
+
+      client.status((error, data) => {
+        assert(typeof data === 'object');
+        assert(Object.keys(data).length > 0);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('specify DB', (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+
+      client.status(options, (error, data) => {
+        assert(typeof data === 'object');
+        assert(Object.keys(data).length > 0);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('no such DB', (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'green'
+      };
+
+      client.status(options, (error, data) => {
+        assert(typeof data === 'undefined');
+        assert(error === 'Bad request');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.status((error, data) => {
+        assert(typeof data === 'undefined');
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
   describe('clear test', () => {
     beforeEach((done) => {
       const client = new KyotoTocoon();

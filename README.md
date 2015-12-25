@@ -121,6 +121,45 @@ kt.report(function(error, data) {
 });
 ```
 
+### kt.status(options, callback)
+
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.status(function(error, data) {
+  for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+      console.log('key: ' + key + ', value: ' data[key]);      
+    }
+  }
+});
+```
+
+### kt.clear(options, callback)
+
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.clear(function(error) {
+  console.log(error);
+});
+```
+
+### kt.check(key, options, callback)
+
+* `key`: **String** the name of the key
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.check(key, function(error, size, expire) {
+  console.log(size);
+  console.log(expire);
+});
+```
+
 ### kt.matchPrefix(key, callback)
 
 * `prefix`: **String** the prefix string

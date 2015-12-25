@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kamoqq/kt-client.git"
+    "url": "https://github.com/kamoqq/node-kt-client.git"
   },
   "keywords": [
     "KyotoTycoon"
@@ -29,9 +29,9 @@
   "author": "kamoqq",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kamoqq/kt-client/issues"
+    "url": "https://github.com/kamoqq/node-kt-client/issues"
   },
-  "homepage": "https://github.com/kamoqq/kt-client",
+  "homepage": "https://github.com/kamoqq/node-kt-client",
   "devDependencies": {
     "babel-core": "^6.3.26",
     "babel-eslint": "^4.1.6",

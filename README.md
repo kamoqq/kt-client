@@ -1,5 +1,5 @@
 # kt-client
-[![Build Status](https://travis-ci.org/kamoqq/kt-client.svg?branch=master)](https://travis-ci.org/kamoqq/kt-client)
+[![Build Status](https://travis-ci.org/kamoqq/node-kt-client.svg?branch=master)](https://travis-ci.org/kamoqq/node-kt-client)
 [![Coverage Status](https://coveralls.io/repos/kamoqq/kt-client/badge.svg?branch=master)](https://coveralls.io/r/kamoqq/kt-client?branch=master)
 
 KyotoTycoon client for Node.js

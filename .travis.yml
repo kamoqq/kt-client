@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "0.10"
   - "0.12"
-  - "4.1"
+  - "4.2"
 
 before_install:
   # setup apt package
@@ -13,7 +13,7 @@ before_install:
   - wget http://fallabs.com/kyotocabinet/pkg/kyotocabinet-1.2.76.tar.gz
   - tar zxvf kyotocabinet-1.2.76.tar.gz
   - cd kyotocabinet-1.2.76
-  - ./configure
+  - ./configure CXXFLAGS='-mno-avx'
   - make
   - sudo make install
   - cd -
@@ -21,7 +21,7 @@ before_install:
   - wget http://fallabs.com/kyototycoon/pkg/kyototycoon-0.9.56.tar.gz
   - tar zxvf kyototycoon-0.9.56.tar.gz
   - cd kyototycoon-0.9.56
-  - ./configure
+  - ./configure CXXFLAGS='-mno-avx'
   - make
   - sudo make install
   - cd -

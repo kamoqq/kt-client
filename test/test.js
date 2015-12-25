@@ -3,26 +3,34 @@
 require('babel-polyfill');
 
 import assert from 'power-assert';
-import childProcess from 'child_process';
-
-let exec = childProcess.exec;
-
 import KyotoTocoon from '../index';
+
+async function clear(callback) {
+  const client = new KyotoTocoon();
+
+  await new Promise((resolve) => {
+    client.clear({ db: 'red' }, resolve);
+  });
+
+  await new Promise((resolve) => {
+    client.clear({ db: 'blue' }, resolve);
+  });
+
+  client.clear(callback);
+}
 
 describe('kt-client', () => {
   describe('get test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
-        done();
-      });
+      clear(done);
     });
 
     it('data', async (done) => {
-      await new Promise((resolve) => {
-        exec('ktremotemgr set test_key test_value', resolve);
-      });
+      const client = new KyotoTocoon();
 
-      let client = new KyotoTocoon();
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', resolve);
+      });
 
       client.get('test_key', (error, value, expire) => {
         assert(value === 'test_value');
@@ -33,14 +41,14 @@ describe('kt-client', () => {
     });
 
     it('specify DB', async (done) => {
-      await new Promise((resolve) => {
-        exec('ktremotemgr set -db blue test_key test_value', resolve);
-      });
-
-      let client = new KyotoTocoon();
-      let options = {
+      const client = new KyotoTocoon();
+      const options = {
         db: 'blue'
       };
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', options, resolve);
+      });
 
       client.get('test_key', options, (error, value, expire) => {
         assert(value === 'test_value');
@@ -51,14 +59,14 @@ describe('kt-client', () => {
     });
 
     it('utf-8 data', async (done) => {
-      await new Promise((resolve) => {
-        exec('ktremotemgr set test_key test_value', resolve);
-      });
-
-      let client = new KyotoTocoon();
-      let options = {
+      const client = new KyotoTocoon();
+      const options = {
         encoding: 'utf8'
       };
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', resolve);
+      });
 
       client.get('test_key', options, (error, value, expire) => {
         assert(value === 'test_value');
@@ -69,17 +77,19 @@ describe('kt-client', () => {
     });
 
     it('binary data', async (done) => {
-      await new Promise((resolve) => {
-        exec('ktremotemgr set test_key binary', resolve);
-      });
-
-      let client = new KyotoTocoon();
-      let options = {
+      const client = new KyotoTocoon();
+      const testValue = new Buffer('test_value');
+      const options = {
         encoding: 'binary'
       };
 
+      await new Promise((resolve) => {
+        client.set('test_key', testValue, options, resolve);
+      });
+
       client.get('test_key', options, (error, value, expire) => {
         assert(Buffer.isBuffer(value));
+        assert(value.toString() === 'test_value');
         assert(expire === null);
         assert(typeof error === 'undefined');
         done();
@@ -87,11 +97,14 @@ describe('kt-client', () => {
     });
 
     it('data and expiration time', async (done) => {
-      await new Promise((resolve) => {
-        exec('ktremotemgr set -xt 300 test_key test_value', resolve);
-      });
+      const client = new KyotoTocoon();
+      const options = {
+        expire: 300
+      };
 
-      let client = new KyotoTocoon();
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', options, resolve);
+      });
 
       client.get('test_key', (error, value, expire) => {
         assert(value === 'test_value');
@@ -102,7 +115,7 @@ describe('kt-client', () => {
     });
 
     it('no data', (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       client.get('test_key', (error, value, expire) => {
         assert(typeof value === 'undefined');
@@ -113,7 +126,7 @@ describe('kt-client', () => {
     });
 
     it('connection error', (done) => {
-      let client = new KyotoTocoon({
+      const client = new KyotoTocoon({
         host: 'localhost',
         port: 9999
       });
@@ -129,13 +142,11 @@ describe('kt-client', () => {
 
   describe('set test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
-        done();
-      });
+      clear(done);
     });
 
     it('data', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
         client.set('test_key', 'test_value', (error) => {
@@ -153,8 +164,8 @@ describe('kt-client', () => {
     });
 
     it('specify DB', async (done) => {
-      let client = new KyotoTocoon();
-      let options = {
+      const client = new KyotoTocoon();
+      const options = {
         db: 'blue'
       };
 
@@ -183,8 +194,8 @@ describe('kt-client', () => {
     });
 
     it('utf-8 data', async (done) => {
-      let client = new KyotoTocoon();
-      let options = {
+      const client = new KyotoTocoon();
+      const options = {
         encoding: 'utf8'
       };
 
@@ -204,9 +215,9 @@ describe('kt-client', () => {
     });
 
     it('binary data', async (done) => {
-      let client = new KyotoTocoon();
-      let testValue = new Buffer('test_value');
-      let options = {
+      const client = new KyotoTocoon();
+      const testValue = new Buffer('test_value');
+      const options = {
         encoding: 'binary'
       };
 
@@ -226,8 +237,8 @@ describe('kt-client', () => {
     });
 
     it('object data', async (done) => {
-      let client = new KyotoTocoon();
-      let testValue = {
+      const client = new KyotoTocoon();
+      const testValue = {
         key: 'test_value'
       };
 
@@ -247,8 +258,8 @@ describe('kt-client', () => {
     });
 
     it('data and expiration time', async (done) => {
-      let client = new KyotoTocoon();
-      let options = {
+      const client = new KyotoTocoon();
+      const options = {
         expire: 300
       };
 
@@ -268,7 +279,7 @@ describe('kt-client', () => {
     });
 
     it('connection error', (done) => {
-      let client = new KyotoTocoon({
+      const client = new KyotoTocoon({
         host: 'localhost',
         port: 9999
       });
@@ -282,13 +293,11 @@ describe('kt-client', () => {
 
   describe('add test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
-        done();
-      });
+      clear(done);
     });
 
     it('data', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
         client.add('test_key', 'test_value', (error) => {
@@ -306,7 +315,7 @@ describe('kt-client', () => {
     });
 
     it('already exists', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
         client.set('test_key', 'foo', () => {
@@ -330,13 +339,11 @@ describe('kt-client', () => {
 
   describe('replace test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
-        done();
-      });
+      clear(done);
     });
 
     it('data', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
         client.set('test_key', 'foo', () => {
@@ -359,7 +366,7 @@ describe('kt-client', () => {
     });
 
     it('not exists', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
         client.set('test_key', 'foo', () => {
@@ -383,13 +390,11 @@ describe('kt-client', () => {
 
   describe('remove test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
-        done();
-      });
+      clear(done);
     });
 
     it('data', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
         client.set('test_key', 'test_value', () => {
@@ -419,8 +424,8 @@ describe('kt-client', () => {
     });
 
     it('specify DB', async (done) => {
-      let client = new KyotoTocoon();
-      let options = {
+      const client = new KyotoTocoon();
+      const options = {
         db: 'blue'
       };
 
@@ -453,7 +458,7 @@ describe('kt-client', () => {
     });
 
     it('not exists', (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       client.remove('test_key', (error) => {
         assert(error === 'No record was found');
@@ -462,7 +467,7 @@ describe('kt-client', () => {
     });
 
     it('connection error', (done) => {
-      let client = new KyotoTocoon({
+      const client = new KyotoTocoon({
         host: 'localhost',
         port: 9999
       });
@@ -476,13 +481,11 @@ describe('kt-client', () => {
 
   describe('void test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
-        done();
-      });
+      clear(done);
     });
 
     it('success', (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       client.void((error) => {
         assert(typeof error === 'undefined');
@@ -491,7 +494,7 @@ describe('kt-client', () => {
     });
 
     it('connection error', (done) => {
-      let client = new KyotoTocoon({
+      const client = new KyotoTocoon({
         host: 'localhost',
         port: 9999
       });
@@ -505,15 +508,13 @@ describe('kt-client', () => {
 
   describe('echo test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
-        done();
-      });
+      clear(done);
     });
 
     it('success', (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
-      client.echo({foo: 'bar'}, (error, ret) => {
+      client.echo({ foo: 'bar' }, (error, ret) => {
         assert(typeof ret.foo !== 'undefined');
         assert(ret.foo === 'bar');
         assert(typeof error === 'undefined');
@@ -522,12 +523,12 @@ describe('kt-client', () => {
     });
 
     it('connection error', (done) => {
-      let client = new KyotoTocoon({
+      const client = new KyotoTocoon({
         host: 'localhost',
         port: 9999
       });
 
-      client.echo({foo: 'bar'}, (error) => {
+      client.echo({ foo: 'bar' }, (error) => {
         assert(error === 'Connection error');
         done();
       });
@@ -536,13 +537,11 @@ describe('kt-client', () => {
 
   describe('report test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
-        done();
-      });
+      clear(done);
     });
 
     it('success', (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       client.report((error, data) => {
         assert(typeof data === 'object');
@@ -554,7 +553,7 @@ describe('kt-client', () => {
     });
 
     it('connection error', (done) => {
-      let client = new KyotoTocoon({
+      const client = new KyotoTocoon({
         host: 'localhost',
         port: 9999
       });
@@ -567,32 +566,230 @@ describe('kt-client', () => {
     });
   });
 
-  describe('matchPrefix test', () => {
+  describe('status test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
+      clear(done);
+    });
+
+    it('status', (done) => {
+      const client = new KyotoTocoon();
+
+      client.status((error, data) => {
+        assert(typeof data === 'object');
+        assert(Object.keys(data).length > 0);
+        assert(typeof error === 'undefined');
         done();
       });
     });
 
+    it('specify DB', (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+
+      client.status(options, (error, data) => {
+        assert(typeof data === 'object');
+        assert(Object.keys(data).length > 0);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('no such DB', (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'green'
+      };
+
+      client.status(options, (error, data) => {
+        assert(typeof data === 'undefined');
+        assert(error === 'Bad request');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.status((error, data) => {
+        assert(typeof data === 'undefined');
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
+  describe('clear test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('clear', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.get('test_key', (error, value) => {
+          assert(value === 'test_value');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.clear((error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.get('test_key', (error, value) => {
+        assert(typeof value === 'undefined');
+        assert(error === 'No record was found');
+        done();
+      });
+    });
+
+    it('specify DB', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.get('test_key', options, (error, value) => {
+          assert(value === 'test_value');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.clear(options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.get('test_key', options, (error, value) => {
+        assert(typeof value === 'undefined');
+        assert(error === 'No record was found');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.clear((error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
+  describe('check test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('check', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', resolve);
+      });
+
+      client.check('test_key', (error, size, expire) => {
+        assert(typeof size === 'number');
+        assert(typeof expire === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('and expiration time', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        expire: 300
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', options, resolve);
+      });
+
+      client.check('test_key', (error, size, expire) => {
+        assert(typeof size === 'number');
+        assert(expire instanceof Date);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('specify DB', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', options, resolve);
+      });
+
+      client.check('test_key', options, (error, size, expire) => {
+        assert(typeof size === 'number');
+        assert(typeof expire === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.check('test_key', (error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
+  describe('matchPrefix test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
     it('match', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        client.set('test_key1', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key1', 'test_value', resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key2', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key2', 'test_value', resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('foo', 'test_value', () => {
-          resolve();
-        });
+        client.set('foo', 'test_value', resolve);
       });
 
       client.matchPrefix('test', (error, data) => {
@@ -607,30 +804,17 @@ describe('kt-client', () => {
     });
 
     it('match DB option', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        let options = {
-          db: 'blue'
-        };
-        client.set('test_key1', 'test_value', options, () => {
-          resolve();
-        });
+        client.set('test_key1', 'test_value', { db: 'blue' }, resolve);
       });
 
       await new Promise((resolve) => {
-        let options = {
-          db: 'red'
-        };
-        client.set('test_key2', 'test_value', options, () => {
-          resolve();
-        });
+        client.set('test_key2', 'test_value', { db: 'red' }, resolve);
       });
 
-      let options = {
-        db: 'blue'
-      };
-      client.matchPrefix('test', options, (error, data) => {
+      client.matchPrefix('test', { db: 'blue' }, (error, data) => {
         assert(data instanceof Array);
         assert(data.length === 1);
         assert(data.includes('test_key1'));
@@ -641,27 +825,21 @@ describe('kt-client', () => {
     });
 
     it('match max option', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        client.set('test_key1', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key1', 'test_value', resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key2', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key2', 'test_value', resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key3', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key3', 'test_value', resolve);
       });
 
-      let options = {
+      const options = {
         max: 2
       };
       client.matchPrefix('test', options, (error, data) => {
@@ -673,18 +851,14 @@ describe('kt-client', () => {
     });
 
     it('no match', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        client.set('test_key1', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key1', 'test_value', resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key2', 'test_value', () => {
-          resolve();
-        });
+        client.set('test_key2', 'test_value', resolve);
       });
 
       client.matchPrefix('foo', (error, data) => {
@@ -696,7 +870,7 @@ describe('kt-client', () => {
     });
 
     it('connection error', (done) => {
-      let client = new KyotoTocoon({
+      const client = new KyotoTocoon({
         host: 'localhost',
         port: 9999
       });
@@ -711,13 +885,11 @@ describe('kt-client', () => {
 
   describe('matchRegex test', () => {
     beforeEach((done) => {
-      exec('ktremotemgr clear', () => {
-        done();
-      });
+      clear(done);
     });
 
     it('match', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
         client.set('test_key1', 'test_value', () => {
@@ -749,10 +921,10 @@ describe('kt-client', () => {
     });
 
     it('match DB option', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        let options = {
+        const options = {
           db: 'blue'
         };
         client.set('test_key1', 'test_value', options, () => {
@@ -761,7 +933,7 @@ describe('kt-client', () => {
       });
 
       await new Promise((resolve) => {
-        let options = {
+        const options = {
           db: 'red'
         };
         client.set('test_key2', 'test_value', options, () => {
@@ -769,7 +941,7 @@ describe('kt-client', () => {
         });
       });
 
-      let options = {
+      const options = {
         db: 'blue'
       };
       client.matchRegex('^test_key[0-9]', options, (error, data) => {
@@ -783,7 +955,7 @@ describe('kt-client', () => {
     });
 
     it('match max option', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
         client.set('test_key1', 'test_value', () => {
@@ -803,7 +975,7 @@ describe('kt-client', () => {
         });
       });
 
-      let options = {
+      const options = {
         max: 2
       };
       client.matchRegex('^test_key[0-9]', options, (error, data) => {
@@ -815,7 +987,7 @@ describe('kt-client', () => {
     });
 
     it('no match', async (done) => {
-      let client = new KyotoTocoon();
+      const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
         client.set('test_key1', 'test_value', () => {
@@ -838,7 +1010,7 @@ describe('kt-client', () => {
     });
 
     it('connection error', (done) => {
-      let client = new KyotoTocoon({
+      const client = new KyotoTocoon({
         host: 'localhost',
         port: 9999
       });

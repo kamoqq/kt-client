@@ -1,5 +1,5 @@
 # kt-client
-[![Build Status](https://travis-ci.org/kamoqq/kt-client.svg?branch=master)](https://travis-ci.org/kamoqq/kt-client)
+[![Build Status](https://travis-ci.org/kamoqq/node-kt-client.svg?branch=master)](https://travis-ci.org/kamoqq/node-kt-client)
 [![Coverage Status](https://coveralls.io/repos/kamoqq/kt-client/badge.svg?branch=master)](https://coveralls.io/r/kamoqq/kt-client?branch=master)
 
 KyotoTycoon client for Node.js
@@ -31,7 +31,7 @@ var kt = new KyotoTycoon(options);
 * `callback`: **Function** the callback
 
 ```javascript
-kt.get('foo', function(error, value) {
+kt.get('foo', function (error, value) {
   console.log(value);
 });
 ```
@@ -44,7 +44,7 @@ kt.get('foo', function(error, value) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.set('foo', 'bar', function(error) {
+kt.set('foo', 'bar', function (error) {
   console.log(error);
 });
 ```
@@ -57,7 +57,7 @@ kt.set('foo', 'bar', function(error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.add('foo', 'bar', function(error) {
+kt.add('foo', 'bar', function (error) {
   console.log(error);
 });
 ```
@@ -70,7 +70,7 @@ kt.add('foo', 'bar', function(error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.replace('foo', 'bar', function(error) {
+kt.replace('foo', 'bar', function (error) {
   console.log(error);
 });
 ```
@@ -81,7 +81,7 @@ kt.replace('foo', 'bar', function(error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.remove('foo', function(error) {
+kt.remove('foo', function (error) {
   console.log(error);
 });
 ```
@@ -91,7 +91,7 @@ kt.remove('foo', function(error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.void(function(error) {
+kt.void(function (error) {
   console.log(error);
 });
 ```
@@ -102,7 +102,7 @@ kt.void(function(error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.echo({foo: 'bar'}, function(error, data) {
+kt.echo({foo: 'bar'}, function (error, data) {
   console.log(data.foo);  // => bar
 });
 ```
@@ -112,7 +112,7 @@ kt.echo({foo: 'bar'}, function(error, data) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.report(function(error, data) {
+kt.report(function (error, data) {
   for (var key in data) {
     if (data.hasOwnProperty(key)) {
       console.log('key: ' + key + ', value: ' data[key]);      
@@ -121,28 +121,67 @@ kt.report(function(error, data) {
 });
 ```
 
-### kt.matchPrefix(key, callback)
+### kt.status(options, callback)
+
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.status(function (error, data) {
+  for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+      console.log('key: ' + key + ', value: ' data[key]);      
+    }
+  }
+});
+```
+
+### kt.clear(options, callback)
+
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.clear(function (error) {
+  console.log(error);
+});
+```
+
+### kt.check(key, options, callback)
+
+* `key`: **String** the name of the key
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.check(key, function (error, size, expire) {
+  console.log(size);
+  console.log(expire);
+});
+```
+
+### kt.matchPrefix(prefix, options, callback)
 
 * `prefix`: **String** the prefix string
 * `options`: **Object** options
 * `callback`: **Function** the callback
 
 ```javascript
-kt.matchPrefix('foo', function(error, data) {
+kt.matchPrefix('foo', function (error, data) {
   for (var i = 0; i < data.length; ++i) {
     console.log(data[i]);
   }
 });
 ```
 
-### kt.matchRegex(key, callback)
+### kt.matchRegex(regex, options, callback)
 
 * `regex`: **String** the regular expression string
 * `options`: **Object** options
 * `callback`: **Function** the callback
 
 ```javascript
-kt.matchRegex('foo.*', function(error, data) {
+kt.matchRegex('foo.*', function (error, data) {
   for (var i = 0; i < data.length; ++i) {
     console.log(data[i]);
   }

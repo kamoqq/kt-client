@@ -812,7 +812,7 @@ describe('kt-client', () => {
       });
 
       await new Promise((resolve) => {
-        client.seize('test_key', 'test_value', options, (error, data, expire) => {
+        client.seize('test_key', options, (error, data, expire) => {
           assert(data === 'test_value');
           assert(expire instanceof Date);
           assert(typeof error === 'undefined');
@@ -839,7 +839,7 @@ describe('kt-client', () => {
       });
 
       await new Promise((resolve) => {
-        client.seize('test_key', 'test_value', options, (error, data, expire) => {
+        client.seize('test_key', options, (error, data, expire) => {
           assert(data === 'test_value');
           assert(typeof expire === 'undefined');
           assert(typeof error === 'undefined');

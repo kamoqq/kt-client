@@ -796,7 +796,7 @@ describe('kt-client', () => {
       client.get('test_key', (error, data, expire) => {
         assert(typeof data === 'undefined');
         assert(typeof expire === 'undefined');
-        assert(typeof error === 'undefined');
+        assert(error === 'No record was found');
         done();
       });
     });
@@ -823,7 +823,7 @@ describe('kt-client', () => {
       client.get('test_key', (error, data, expire) => {
         assert(typeof data === 'undefined');
         assert(typeof expire === 'undefined');
-        assert(typeof error === 'undefined');
+        assert(error === 'No record was found');
         done();
       });
     });
@@ -850,7 +850,7 @@ describe('kt-client', () => {
       client.get('test_key', (error, data, expire) => {
         assert(typeof data === 'undefined');
         assert(typeof expire === 'undefined');
-        assert(typeof error === 'undefined');
+        assert(error === 'No record was found');
         done();
       });
     });

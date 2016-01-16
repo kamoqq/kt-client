@@ -772,6 +772,102 @@ describe('kt-client', () => {
     });
   });
 
+  describe('seize test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('seize', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.seize('test_key', (error, data, expire) => {
+          assert(data === 'test_value');
+          assert(typeof expire === 'undefined');
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.get('test_key', (error, data, expire) => {
+        assert(typeof data === 'undefined');
+        assert(typeof expire === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('and expiration time', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        expire: 300
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.seize('test_key', 'test_value', options, (error, data, expire) => {
+          assert(data === 'test_value');
+          assert(expire instanceof Date);
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.get('test_key', (error, data, expire) => {
+        assert(typeof data === 'undefined');
+        assert(typeof expire === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('specify DB', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.seize('test_key', 'test_value', options, (error, data, expire) => {
+          assert(data === 'test_value');
+          assert(typeof expire === 'undefined');
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.get('test_key', (error, data, expire) => {
+        assert(typeof data === 'undefined');
+        assert(typeof expire === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.check('test_key', (error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
   describe('matchPrefix test', () => {
     beforeEach((done) => {
       clear(done);

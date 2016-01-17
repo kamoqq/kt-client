@@ -868,6 +868,57 @@ describe('kt-client', () => {
     });
   });
 
+  describe('vacuum test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('vacuum', (done) => {
+      const client = new KyotoTocoon();
+
+      client.vacuum((error) => {
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('specify DB', (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+
+      client.vacuum(options, (error) => {
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('step option', (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        step: 10
+      };
+
+      client.vacuum(options, (error) => {
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.vacuum((error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
   describe('matchPrefix test', () => {
     beforeEach((done) => {
       clear(done);

@@ -756,7 +756,7 @@ describe('kt-client', () => {
       });
 
       await new Promise((resolve) => {
-        client.get('test_key', (error, value, expire) => {
+        client.get('test_key', options, (error, value, expire) => {
           assert(value === 'test_value');
           assert(expire === null);
           assert(typeof error === 'undefined');

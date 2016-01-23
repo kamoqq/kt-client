@@ -831,7 +831,7 @@ describe('kt-client', () => {
         port: 9999
       });
 
-      client.set('test_key', 'test_value', (error) => {
+      client.append('test_key', 'test_value', (error) => {
         assert(error === 'Connection error');
         done();
       });

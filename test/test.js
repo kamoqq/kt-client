@@ -1010,6 +1010,178 @@ describe('kt-client', () => {
     });
   });
 
+  describe('incrementDouble test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('incrementDouble', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.incrementDouble('test_key', 0.1, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.get('test_key', (error, value, expire) => {
+          assert(value === '0.1');
+          assert(expire === null);
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.incrementDouble('test_key', 0.1, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.get('test_key', (error, value, expire) => {
+        assert(value === '0.2');
+        assert(expire === null);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('with origin number', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        orig: 10
+      };
+
+      await new Promise((resolve) => {
+        client.incrementDouble('test_key', 0.1, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.get('test_key', (error, value, expire) => {
+          assert(value === '10.1');
+          assert(expire === null);
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.incrementDouble('test_key', 0.1, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.get('test_key', (error, value, expire) => {
+        assert(value === '10.2');
+        assert(expire === null);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('specify DB', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+
+      await new Promise((resolve) => {
+        client.incrementDouble('test_key', 0.1, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.get('test_key', options, (error, value, expire) => {
+          assert(value === '0.1');
+          assert(expire === null);
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.incrementDouble('test_key', 0.1, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.get('test_key', (error, value, expire) => {
+          assert(typeof value === 'undefined');
+          assert(typeof expire === 'undefined');
+          assert(error === 'No record was found');
+          resolve();
+        });
+      });
+
+      client.get('test_key', options, (error, value, expire) => {
+        assert(value === '0.2');
+        assert(expire === null);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('expiration time', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        expire: 300
+      };
+
+      await new Promise((resolve) => {
+        client.incrementDouble('test_key', 0.1, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.get('test_key', (error, value, expire) => {
+          assert(value === '0.1');
+          assert(expire instanceof Date);
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.incrementDouble('test_key', 0.1, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.get('test_key', options, (error, value, expire) => {
+        assert(value === '0.2');
+        assert(expire instanceof Date);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.incrementDouble('test_key', 0.1, (error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
   describe('check test', () => {
     beforeEach((done) => {
       clear(done);

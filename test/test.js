@@ -847,31 +847,15 @@ describe('kt-client', () => {
       const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        client.increment('test_key', 1, (error) => {
+        client.increment('test_key', 1, (error, num) => {
+          assert(num === 1);
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
-      await new Promise((resolve) => {
-        client.get('test_key', (error, value, expire) => {
-          assert(value === '1');
-          assert(expire === null);
-          assert(typeof error === 'undefined');
-          resolve();
-        });
-      });
-
-      await new Promise((resolve) => {
-        client.increment('test_key', 1, (error) => {
-          assert(typeof error === 'undefined');
-          resolve();
-        });
-      });
-
-      client.get('test_key', (error, value, expire) => {
-        assert(value === '2');
-        assert(expire === null);
+      client.increment('test_key', 1, (error, num) => {
+        assert(num === 2);
         assert(typeof error === 'undefined');
         done();
       });
@@ -884,31 +868,15 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.increment('test_key', 1, options, (error) => {
+        client.increment('test_key', 1, options, (error, num) => {
+          assert(num === 11);
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
-      await new Promise((resolve) => {
-        client.get('test_key', (error, value, expire) => {
-          assert(value === '11');
-          assert(expire === null);
-          assert(typeof error === 'undefined');
-          resolve();
-        });
-      });
-
-      await new Promise((resolve) => {
-        client.increment('test_key', 1, options, (error) => {
-          assert(typeof error === 'undefined');
-          resolve();
-        });
-      });
-
-      client.get('test_key', (error, value, expire) => {
-        assert(value === '12');
-        assert(expire === null);
+      client.increment('test_key', 1, options, (error, num) => {
+        assert(num === 12);
         assert(typeof error === 'undefined');
         done();
       });
@@ -921,41 +889,25 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.increment('test_key', 1, options, (error) => {
+        client.increment('test_key', 1, options, (error, num) => {
+          assert(num === 1);
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
       await new Promise((resolve) => {
-        client.get('test_key', options, (error, value, expire) => {
-          assert(value === '1');
-          assert(expire === null);
+        client.increment('test_key', 1, options, (error, num) => {
+          assert(num === 2);
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
-      await new Promise((resolve) => {
-        client.increment('test_key', 1, options, (error) => {
-          assert(typeof error === 'undefined');
-          resolve();
-        });
-      });
-
-      await new Promise((resolve) => {
-        client.get('test_key', (error, value, expire) => {
-          assert(typeof value === 'undefined');
-          assert(typeof expire === 'undefined');
-          assert(error === 'No record was found');
-          resolve();
-        });
-      });
-
-      client.get('test_key', options, (error, value, expire) => {
-        assert(value === '2');
-        assert(expire === null);
-        assert(typeof error === 'undefined');
+      client.get('test_key', (error, value, expire) => {
+        assert(typeof value === 'undefined');
+        assert(typeof expire === 'undefined');
+        assert(error === 'No record was found');
         done();
       });
     });
@@ -967,7 +919,8 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.increment('test_key', 1, options, (error) => {
+        client.increment('test_key', 1, options, (error, num) => {
+          assert(num === 1);
           assert(typeof error === 'undefined');
           resolve();
         });
@@ -975,7 +928,7 @@ describe('kt-client', () => {
 
       await new Promise((resolve) => {
         client.get('test_key', (error, value, expire) => {
-          assert(value === '1');
+          assert(typeof value !== 'undefined');
           assert(expire instanceof Date);
           assert(typeof error === 'undefined');
           resolve();
@@ -983,14 +936,15 @@ describe('kt-client', () => {
       });
 
       await new Promise((resolve) => {
-        client.increment('test_key', 1, options, (error) => {
+        client.increment('test_key', 1, options, (error, num) => {
+          assert(num === 2);
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
       client.get('test_key', options, (error, value, expire) => {
-        assert(value === '2');
+        assert(typeof value !== 'undefined');
         assert(expire instanceof Date);
         assert(typeof error === 'undefined');
         done();
@@ -1019,31 +973,15 @@ describe('kt-client', () => {
       const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
-        client.incrementDouble('test_key', 0.1, (error) => {
+        client.incrementDouble('test_key', 0.1, (error, num) => {
+          assert(num === 0.1);
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
-      await new Promise((resolve) => {
-        client.get('test_key', (error, value, expire) => {
-          assert(value === '0.1');
-          assert(expire === null);
-          assert(typeof error === 'undefined');
-          resolve();
-        });
-      });
-
-      await new Promise((resolve) => {
-        client.incrementDouble('test_key', 0.1, (error) => {
-          assert(typeof error === 'undefined');
-          resolve();
-        });
-      });
-
-      client.get('test_key', (error, value, expire) => {
-        assert(value === '0.2');
-        assert(expire === null);
+      client.incrementDouble('test_key', 0.1, (error, num) => {
+        assert(num === 0.2);
         assert(typeof error === 'undefined');
         done();
       });
@@ -1056,31 +994,15 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.incrementDouble('test_key', 0.1, options, (error) => {
+        client.incrementDouble('test_key', 0.1, options, (error, num) => {
+          assert(num === 10.1);
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
-      await new Promise((resolve) => {
-        client.get('test_key', (error, value, expire) => {
-          assert(value === '10.1');
-          assert(expire === null);
-          assert(typeof error === 'undefined');
-          resolve();
-        });
-      });
-
-      await new Promise((resolve) => {
-        client.incrementDouble('test_key', 0.1, options, (error) => {
-          assert(typeof error === 'undefined');
-          resolve();
-        });
-      });
-
-      client.get('test_key', (error, value, expire) => {
-        assert(value === '10.2');
-        assert(expire === null);
+      client.incrementDouble('test_key', 0.1, options, (error, num) => {
+        assert(num === 10.2);
         assert(typeof error === 'undefined');
         done();
       });
@@ -1093,41 +1015,25 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.incrementDouble('test_key', 0.1, options, (error) => {
+        client.incrementDouble('test_key', 0.1, options, (error, num) => {
+          assert(num === 0.1);
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
       await new Promise((resolve) => {
-        client.get('test_key', options, (error, value, expire) => {
-          assert(value === '0.1');
-          assert(expire === null);
+        client.incrementDouble('test_key', 0.1, options, (error, num) => {
+          assert(num === 0.2);
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
-      await new Promise((resolve) => {
-        client.incrementDouble('test_key', 0.1, options, (error) => {
-          assert(typeof error === 'undefined');
-          resolve();
-        });
-      });
-
-      await new Promise((resolve) => {
-        client.get('test_key', (error, value, expire) => {
-          assert(typeof value === 'undefined');
-          assert(typeof expire === 'undefined');
-          assert(error === 'No record was found');
-          resolve();
-        });
-      });
-
-      client.get('test_key', options, (error, value, expire) => {
-        assert(value === '0.2');
-        assert(expire === null);
-        assert(typeof error === 'undefined');
+      client.get('test_key', (error, value, expire) => {
+        assert(typeof value === 'undefined');
+        assert(typeof expire === 'undefined');
+        assert(error === 'No record was found');
         done();
       });
     });
@@ -1139,7 +1045,8 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.incrementDouble('test_key', 0.1, options, (error) => {
+        client.incrementDouble('test_key', 0.1, options, (error, num) => {
+          assert(num === 0.1);
           assert(typeof error === 'undefined');
           resolve();
         });
@@ -1147,7 +1054,7 @@ describe('kt-client', () => {
 
       await new Promise((resolve) => {
         client.get('test_key', (error, value, expire) => {
-          assert(value === '0.1');
+          assert(typeof value !== 'undefined');
           assert(expire instanceof Date);
           assert(typeof error === 'undefined');
           resolve();
@@ -1155,14 +1062,15 @@ describe('kt-client', () => {
       });
 
       await new Promise((resolve) => {
-        client.incrementDouble('test_key', 0.1, options, (error) => {
+        client.incrementDouble('test_key', 0.1, options, (error, num) => {
+          assert(num === 0.2);
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
       client.get('test_key', options, (error, value, expire) => {
-        assert(value === '0.2');
+        assert(typeof value !== 'undefined');
         assert(expire instanceof Date);
         assert(typeof error === 'undefined');
         done();
@@ -1175,7 +1083,8 @@ describe('kt-client', () => {
         port: 9999
       });
 
-      client.incrementDouble('test_key', 0.1, (error) => {
+      client.incrementDouble('test_key', 0.1, (error, num) => {
+        assert(typeof num === 'undefined');
         assert(error === 'Connection error');
         done();
       });

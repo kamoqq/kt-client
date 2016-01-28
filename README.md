@@ -1,6 +1,8 @@
 # kt-client
 [![Build Status](https://travis-ci.org/kamoqq/node-kt-client.svg?branch=master)](https://travis-ci.org/kamoqq/node-kt-client)
-[![Coverage Status](https://coveralls.io/repos/kamoqq/kt-client/badge.svg?branch=master)](https://coveralls.io/r/kamoqq/kt-client?branch=master)
+[![Coverage Status](https://coveralls.io/repos/kamoqq/node-kt-client/badge.svg?branch=master)](https://coveralls.io/r/kamoqq/node-kt-client?branch=master)
+[![Dependency Status](https://david-dm.org/kamoqq/node-kt-client.svg)](https://david-dm.org/kamoqq/node-kt-client)
+[![devDependency Status](https://david-dm.org/kamoqq/node-kt-client/dev-status.svg)](https://david-dm.org/kamoqq/node-kt-client#info=devDependencies)
 
 KyotoTycoon client for Node.js
 
@@ -147,6 +149,45 @@ kt.clear(function (error) {
 });
 ```
 
+### kt.append(key, value, options, callback)
+
+* `key`: **String** the name of the key
+* `value`: **Mixed** value
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.append(key, value, function (error) {
+  console.log(error);
+});
+```
+
+### kt.increment(key, value, options, callback)
+
+* `key`: **String** the name of the key
+* `num`: **Number** the additional number
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.increment(key, num, function (error, num) {
+  console.log(num);
+});
+```
+
+### kt.incrementDouble(key, value, options, callback)
+
+* `key`: **String** the name of the key
+* `num`: **Number** the additional number
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.incrementDouble(key, num, function (error, num) {
+  console.log(num);
+});
+```
+
 ### kt.check(key, options, callback)
 
 * `key`: **String** the name of the key
@@ -157,6 +198,30 @@ kt.clear(function (error) {
 kt.check(key, function (error, size, expire) {
   console.log(size);
   console.log(expire);
+});
+```
+
+### kt.seize(key, options, callback)
+
+* `key`: **String** the name of the key
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.seize(key, function (error, value, expire) {
+  console.log(value);
+  console.log(expire);
+});
+```
+
+## kt.vacuum(options, callback)
+
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.vacuum(function (error) {
+  console.log(error);
 });
 ```
 

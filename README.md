@@ -214,6 +214,17 @@ kt.seize(key, function (error, value, expire) {
 });
 ```
 
+## kt.seize(options, callback)
+
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.seize(function (error) {
+  console.log(error);
+});
+```
+
 ### kt.matchPrefix(prefix, options, callback)
 
 * `prefix`: **String** the prefix string

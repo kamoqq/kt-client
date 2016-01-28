@@ -175,6 +175,19 @@ kt.increment(key, num, function (error, num) {
 });
 ```
 
+### kt.incrementDouble(key, value, options, callback)
+
+* `key`: **String** the name of the key
+* `num`: **Number** the additional number
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.incrementDouble(key, num, function (error, num) {
+  console.log(num);
+});
+```
+
 ### kt.check(key, options, callback)
 
 * `key`: **String** the name of the key

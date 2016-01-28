@@ -201,6 +201,19 @@ kt.check(key, function (error, size, expire) {
 });
 ```
 
+### kt.seize(key, options, callback)
+
+* `key`: **String** the name of the key
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.seize(key, function (error, value, expire) {
+  console.log(value);
+  console.log(expire);
+});
+```
+
 ### kt.matchPrefix(prefix, options, callback)
 
 * `prefix`: **String** the prefix string

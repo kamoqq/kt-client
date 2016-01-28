@@ -44,7 +44,7 @@
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^4.0.0",
     "espower-babel": "^4.0.1",
-    "mocha": "^2.3.4",
+    "mocha": "^2.4.4",
     "mocha-lcov-reporter": "^1.0.0",
     "power-assert": "^1.2.0"
   },

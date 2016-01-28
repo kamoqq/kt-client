@@ -214,13 +214,13 @@ kt.seize(key, function (error, value, expire) {
 });
 ```
 
-## kt.seize(options, callback)
+## kt.vacuum(options, callback)
 
 * `options`: **Object** options
 * `callback`: **Function** the callback
 
 ```javascript
-kt.seize(function (error) {
+kt.vacuum(function (error) {
   console.log(error);
 });
 ```

@@ -149,6 +149,19 @@ kt.clear(function (error) {
 });
 ```
 
+### kt.append(key, value, options, callback)
+
+* `key`: **String** the name of the key
+* `value`: **Mixed** value
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.append(key, value, function (error) {
+  console.log(error);
+});
+```
+
 ### kt.check(key, options, callback)
 
 * `key`: **String** the name of the key

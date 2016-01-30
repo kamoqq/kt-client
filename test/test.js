@@ -1331,17 +1331,17 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.set('test_key1', 'test_value1', options, resolve);
+        client.set('test_key1', '京都', options, resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key2', 'test_value2', options, resolve);
+        client.set('test_key2', '東京', options, resolve);
       });
 
 
       client.getBulk(['test_key1', 'test_key2'], options, (error, ret) => {
-        assert(ret.test_key1 === 'test_value1');
-        assert(ret.test_key2 === 'test_value2');
+        assert(ret.test_key1 === '京都');
+        assert(ret.test_key2 === '東京');
         assert(typeof error === 'undefined');
         done();
       });
@@ -1354,18 +1354,16 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.set('test_key1', new Buffer('test_value1'), options, resolve);
+        client.set('test_key1', new Buffer([1, 2, 3]), options, resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key2', new Buffer('test_value2'), options, resolve);
+        client.set('test_key2', new Buffer([4, 5, 6]), options, resolve);
       });
 
       client.getBulk(['test_key1', 'test_key2'], options, (error, ret) => {
         assert(Buffer.isBuffer(ret.test_key1));
-        assert(ret.test_key1.toString() === 'test_value1');
         assert(Buffer.isBuffer(ret.test_key2));
-        assert(ret.test_key2.toString() === 'test_value2');
         assert(typeof error === 'undefined');
         done();
       });
@@ -1376,7 +1374,7 @@ describe('kt-client', () => {
 
       client.getBulk(['test_key'], (error, ret) => {
         assert(typeof ret.test_key === 'undefined');
-        assert(error === 'No record was found');
+        assert(typeof error === 'undefined');
         done();
       });
     });

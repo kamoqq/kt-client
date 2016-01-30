@@ -1375,7 +1375,7 @@ describe('kt-client', () => {
       const client = new KyotoTocoon();
 
       client.getBulk(['test_key'], (error, ret) => {
-        assert(typeof ret === 'undefined');
+        assert(typeof ret.test_key === 'undefined');
         assert(error === 'No record was found');
         done();
       });

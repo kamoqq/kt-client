@@ -1256,6 +1256,145 @@ describe('kt-client', () => {
     });
   });
 
+  describe('getBulk test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('getBulk', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value1', resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value2', resolve);
+      });
+
+      client.getBulk(['test_key1', 'test_key2'], (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('specify DB', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value1', options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value2', options, resolve);
+      });
+
+      client.getBulk(['test_key1', 'test_key2'], options, (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('atomic', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        atomic: true
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value1', options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value2', options, resolve);
+      });
+
+      client.getBulk(['test_key1', 'test_key2'], options, (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('utf-8 data', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        encoding: 'utf8'
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value1', options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value2', options, resolve);
+      });
+
+
+      client.getBulk(['test_key1', 'test_key2'], options, (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('binary data', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        encoding: 'binary'
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key1', new Buffer('test_value1'), options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', new Buffer('test_value2'), options, resolve);
+      });
+
+      client.getBulk(['test_key1', 'test_key2'], options, (error, ret) => {
+        assert(Buffer.isBuffer(ret.test_key1));
+        assert(ret.test_key1.toString() === 'test_value1');
+        assert(Buffer.isBuffer(ret.test_key2));
+        assert(ret.test_key2.toString() === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('no data', (done) => {
+      const client = new KyotoTocoon();
+
+      client.getBulk(['test_key'], (error, ret) => {
+        assert(typeof ret === 'undefined');
+        assert(error === 'No record was found');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.getBulk(['test_key'], (error, ret) => {
+        assert(typeof ret === 'undefined');
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
   describe('vacuum test', () => {
     beforeEach((done) => {
       clear(done);

@@ -200,14 +200,14 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.set('test_key', 'test_value', options, (error) => {
+        client.set('test_key', '京都', options, (error) => {
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
       client.get('test_key', options, (error, value, expire) => {
-        assert(value === 'test_value');
+        assert(value === '京都');
         assert(expire === null);
         assert(typeof error === 'undefined');
         done();

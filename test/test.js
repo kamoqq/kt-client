@@ -1397,6 +1397,150 @@ describe('kt-client', () => {
     });
   });
 
+  describe('removeBulk test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('data', async (done) => {
+      const client = new KyotoTocoon();
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.getBulk(Object.keys(testData), (error, ret) => {
+          assert(ret.test_key1 === 'test_value1');
+          assert(ret.test_key2 === 'test_value2');
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.removeBulk(Object.keys(testData), (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), (error, ret) => {
+        assert(typeof ret.test_key1 === 'undefined');
+        assert(typeof ret.test_key2 === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('specify DB', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, options, () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.getBulk(Object.keys(testData), options, (error, ret) => {
+          assert(ret.test_key1 === 'test_value1');
+          assert(ret.test_key2 === 'test_value2');
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.removeBulk(Object.keys(testData), options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), options, (error, ret) => {
+        assert(typeof ret.test_key1 === 'undefined');
+        assert(typeof ret.test_key2 === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('atomic', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        atomic: true
+      };
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, options, () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.getBulk(Object.keys(testData), options, (error, ret) => {
+          assert(ret.test_key1 === 'test_value1');
+          assert(ret.test_key2 === 'test_value2');
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.removeBulk(Object.keys(testData), options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), options, (error, ret) => {
+        assert(typeof ret.test_key1 === 'undefined');
+        assert(typeof ret.test_key2 === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('not exists', (done) => {
+      const client = new KyotoTocoon();
+
+      client.removeBulk(['test_key1', 'test_key2'], (error) => {
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.removeBulk(['test_key1', 'test_key2'], (error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
   describe('getBulk test', () => {
     beforeEach((done) => {
       clear(done);

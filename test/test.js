@@ -163,6 +163,24 @@ describe('kt-client', () => {
       });
     });
 
+    it('number', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key', 1, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.get('test_key', (error, value, expire) => {
+        assert(value === '1');
+        assert(expire === null);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
     it('specify DB', async (done) => {
       const client = new KyotoTocoon();
       const options = {

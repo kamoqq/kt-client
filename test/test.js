@@ -1308,6 +1308,31 @@ describe('kt-client', () => {
       });
     });
 
+    it('atomic', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        atomic: true
+      };
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), options, (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
     it('utf-8 data', async (done) => {
       const client = new KyotoTocoon();
       const options = {

@@ -214,6 +214,42 @@ kt.seize(key, function (error, value, expire) {
 });
 ```
 
+### kt.setBulk(records, options, callback)
+
+* `records`: **Object** the records
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.setBulk(records, function (error) {
+  console.log(error);
+});
+```
+
+### kt.removeBulk(records, options, callback)
+
+* `keys`: **Array** the key of the record
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.removeBulk(keys, function (error) {
+  console.log(error);
+});
+```
+
+### kt.getBulk(records, options, callback)
+
+* `keys`: **Array** the key of the record
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.getBulk(keys, function (error, ret) {
+  console.log(ret.key);
+});
+```
+
 ## kt.vacuum(options, callback)
 
 * `options`: **Object** options

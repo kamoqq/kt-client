@@ -163,6 +163,24 @@ describe('kt-client', () => {
       });
     });
 
+    it('number', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key', 1, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.get('test_key', (error, value, expire) => {
+        assert(value === '1');
+        assert(expire === null);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
     it('specify DB', async (done) => {
       const client = new KyotoTocoon();
       const options = {
@@ -200,14 +218,14 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.set('test_key', 'test_value', options, (error) => {
+        client.set('test_key', '京都', options, (error) => {
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
       client.get('test_key', options, (error, value, expire) => {
-        assert(value === 'test_value');
+        assert(value === '京都');
         assert(expire === null);
         assert(typeof error === 'undefined');
         done();
@@ -1250,6 +1268,453 @@ describe('kt-client', () => {
       });
 
       client.check('test_key', (error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
+  describe('setBulk test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('data', async (done) => {
+      const client = new KyotoTocoon();
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('specify DB', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), options, (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('atomic', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        atomic: true
+      };
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), options, (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('utf-8 data', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        encoding: 'utf8'
+      };
+      const testData = {
+        test_key1: '京都',
+        test_key2: '東京'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), options, (error, ret) => {
+        assert(ret.test_key1 === '京都');
+        assert(ret.test_key2 === '東京');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('binary data', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        encoding: 'binary'
+      };
+      const testData = {
+        test_key1: new Buffer([1, 2, 3]),
+        test_key2: new Buffer([4, 5, 6])
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), options, (error, ret) => {
+        assert(Buffer.isBuffer(ret.test_key1));
+        assert(Buffer.isBuffer(ret.test_key2));
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('object data', async (done) => {
+      const client = new KyotoTocoon();
+      const testData = {
+        test_key1: { a: 'b' },
+        test_key2: { c: 'd' }
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), (error, ret) => {
+        assert.deepEqual(JSON.parse(ret.test_key1), testData.test_key1);
+        assert.deepEqual(JSON.parse(ret.test_key2), testData.test_key2);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      client.setBulk(testData, (error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
+  describe('removeBulk test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('data', async (done) => {
+      const client = new KyotoTocoon();
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.getBulk(Object.keys(testData), (error, ret) => {
+          assert(ret.test_key1 === 'test_value1');
+          assert(ret.test_key2 === 'test_value2');
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.removeBulk(Object.keys(testData), (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), (error, ret) => {
+        assert(typeof ret.test_key1 === 'undefined');
+        assert(typeof ret.test_key2 === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('specify DB', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, options, () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.getBulk(Object.keys(testData), options, (error, ret) => {
+          assert(ret.test_key1 === 'test_value1');
+          assert(ret.test_key2 === 'test_value2');
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.removeBulk(Object.keys(testData), options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), options, (error, ret) => {
+        assert(typeof ret.test_key1 === 'undefined');
+        assert(typeof ret.test_key2 === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('atomic', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        atomic: true
+      };
+      const testData = {
+        test_key1: 'test_value1',
+        test_key2: 'test_value2'
+      };
+
+      await new Promise((resolve) => {
+        client.setBulk(testData, options, () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.getBulk(Object.keys(testData), options, (error, ret) => {
+          assert(ret.test_key1 === 'test_value1');
+          assert(ret.test_key2 === 'test_value2');
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.removeBulk(Object.keys(testData), options, (error) => {
+          assert(typeof error === 'undefined');
+          resolve();
+        });
+      });
+
+      client.getBulk(Object.keys(testData), options, (error, ret) => {
+        assert(typeof ret.test_key1 === 'undefined');
+        assert(typeof ret.test_key2 === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('not exists', (done) => {
+      const client = new KyotoTocoon();
+
+      client.removeBulk(['test_key1', 'test_key2'], (error) => {
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.removeBulk(['test_key1', 'test_key2'], (error) => {
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
+
+  describe('getBulk test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('getBulk', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value1', resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value2', resolve);
+      });
+
+      client.getBulk(['test_key1', 'test_key2'], (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('specify DB', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        db: 'blue'
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value1', options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value2', options, resolve);
+      });
+
+      client.getBulk(['test_key1', 'test_key2'], options, (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('atomic', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        atomic: true
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value1', options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value2', options, resolve);
+      });
+
+      client.getBulk(['test_key1', 'test_key2'], options, (error, ret) => {
+        assert(ret.test_key1 === 'test_value1');
+        assert(ret.test_key2 === 'test_value2');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('utf-8 data', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        encoding: 'utf8'
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key1', '京都', options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', '東京', options, resolve);
+      });
+
+
+      client.getBulk(['test_key1', 'test_key2'], options, (error, ret) => {
+        assert(ret.test_key1 === '京都');
+        assert(ret.test_key2 === '東京');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('binary data', async (done) => {
+      const client = new KyotoTocoon();
+      const options = {
+        encoding: 'binary'
+      };
+
+      await new Promise((resolve) => {
+        client.set('test_key1', new Buffer([1, 2, 3]), options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', new Buffer([4, 5, 6]), options, resolve);
+      });
+
+      client.getBulk(['test_key1', 'test_key2'], options, (error, ret) => {
+        assert(Buffer.isBuffer(ret.test_key1));
+        assert(Buffer.isBuffer(ret.test_key2));
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('no data', (done) => {
+      const client = new KyotoTocoon();
+
+      client.getBulk(['test_key'], (error, ret) => {
+        assert(typeof ret.test_key === 'undefined');
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999
+      });
+
+      client.getBulk(['test_key'], (error, ret) => {
+        assert(typeof ret === 'undefined');
         assert(error === 'Connection error');
         done();
       });

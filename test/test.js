@@ -2149,7 +2149,7 @@ describe('kt-client', () => {
       });
 
       const options = {
-        range: 10,
+        utf: true,
       };
       client.matchSimilar('京都', options, (error, data) => {
         assert(data instanceof Array);

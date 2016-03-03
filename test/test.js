@@ -2020,4 +2020,214 @@ describe('kt-client', () => {
       });
     });
   });
+
+  describe('matchSimilar test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('match', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('foo', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      client.matchSimilar('test_key1', (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 2);
+        assert(data.includes('test_key1'));
+        assert(data.includes('test_key2'));
+        assert(!data.includes('foo'));
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('match DB option', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        const options = {
+          db: 'blue',
+        };
+        client.set('test_key1', 'test_value', options, () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        const options = {
+          db: 'red',
+        };
+        client.set('test_key2', 'test_value', options, () => {
+          resolve();
+        });
+      });
+
+      const options = {
+        db: 'blue',
+      };
+      client.matchSimilar('test_key1', options, (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 1);
+        assert(data.includes('test_key1'));
+        assert(!data.includes('test_key2'));
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('match range option', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('foo', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      const options = {
+        range: 10,
+      };
+      client.matchSimilar('test_key1', options, (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 3);
+        assert(data.includes('test_key1'));
+        assert(data.includes('test_key2'));
+        assert(data.includes('foo'));
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('match utf option', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('京都', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('京芋', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('foo', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      const options = {
+        range: 10,
+      };
+      client.matchSimilar('京都', options, (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 3);
+        assert(data.includes('京都'));
+        assert(data.includes('京芋'));
+        assert(!data.includes('foo'));
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('match max option', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key3', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      const options = {
+        max: 2,
+      };
+      client.matchSimilar('test_key1', options, (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 2);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('no match', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key1', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      await new Promise((resolve) => {
+        client.set('test_key2', 'test_value', () => {
+          resolve();
+        });
+      });
+
+      client.matchSimilar('foo', (error, data) => {
+        assert(data instanceof Array);
+        assert(data.length === 0);
+        assert(typeof error === 'undefined');
+        done();
+      });
+    });
+
+    it('connection error', (done) => {
+      const client = new KyotoTocoon({
+        host: 'localhost',
+        port: 9999,
+      });
+
+      client.matchSimilar('test', (error, data) => {
+        assert(typeof data === 'undefined');
+        assert(error === 'Connection error');
+        done();
+      });
+    });
+  });
 });

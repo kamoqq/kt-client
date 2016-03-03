@@ -2153,7 +2153,7 @@ describe('kt-client', () => {
       };
       client.matchSimilar('京都', options, (error, data) => {
         assert(data instanceof Array);
-        assert(data.length === 3);
+        assert(data.length === 2);
         assert(data.includes('京都'));
         assert(data.includes('京芋'));
         assert(!data.includes('foo'));

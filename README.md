@@ -289,5 +289,19 @@ kt.matchRegex('foo.*', function (error, data) {
 });
 ```
 
+### kt.matchSimilar(origin, options, callback)
+
+* `origin`: **String** the origin string
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.matchSimilar('foo', function (error, data) {
+  for (var i = 0; i < data.length; ++i) {
+    console.log(data[i]);
+  }
+});
+```
+
 ## License
 [MIT](https://github.com/kamoqq/kt-client/blob/master/LICENSE)

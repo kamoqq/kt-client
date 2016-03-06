@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/kamoqq/node-kt-client",
   "devDependencies": {
-    "babel-core": "^6.6.4",
+    "babel-core": "^6.6.5",
     "babel-eslint": "^5.0.0",
     "babel-plugin-syntax-async-functions": "^6.5.0",
     "babel-plugin-transform-regenerator": "^6.6.0",

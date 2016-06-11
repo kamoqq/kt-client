@@ -1107,6 +1107,30 @@ describe('kt-client', () => {
     });
   });
 
+  describe('cas test', () => {
+    beforeEach((done) => {
+      clear(done);
+    });
+
+    it('check', async (done) => {
+      const client = new KyotoTocoon();
+
+      await new Promise((resolve) => {
+        client.set('test_key', 'test_value', resolve);
+      });
+
+      const options = {
+        oval: 'test_value',
+        nval: 'new_value',
+      };
+
+      client.cas('test_key', options, (error, ret) => {
+        assert(ret === true);
+        done();
+      });
+    });
+  });
+
   describe('check test', () => {
     beforeEach((done) => {
       clear(done);

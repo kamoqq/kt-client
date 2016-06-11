@@ -1125,7 +1125,9 @@ describe('kt-client', () => {
       };
 
       client.cas('test_key', options, (error, ret) => {
-        assert(ret === true);
+        Object.keys(ret).forEach((key) => {
+          assert(ret[key] === true);
+        });
         done();
       });
     });

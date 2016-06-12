@@ -1112,15 +1112,6 @@ describe('kt-client', () => {
       clear(done);
     });
 
-    it('no option', (done) => {
-      const client = new KyotoTocoon();
-
-      client.cas('test_key', (error) => {
-        assert(typeof error === 'undefined');
-        done();
-      });
-    });
-
     it('swap', async (done) => {
       const client = new KyotoTocoon();
 
@@ -1128,13 +1119,8 @@ describe('kt-client', () => {
         client.set('test_key', 'test_value', resolve);
       });
 
-      const options = {
-        oval: 'test_value',
-        nval: 'new_value',
-      };
-
       await new Promise((resolve) => {
-        client.cas('test_key', options, (error) => {
+        client.cas('test_key', 'test_value', 'new_value', (error) => {
           assert(typeof error === 'undefined');
           resolve();
         });
@@ -1151,12 +1137,8 @@ describe('kt-client', () => {
     it('no old value', async (done) => {
       const client = new KyotoTocoon();
 
-      const options = {
-        nval: 'new_value',
-      };
-
       await new Promise((resolve) => {
-        client.cas('test_key', options, (error) => {
+        client.cas('test_key', undefined, 'new_value', (error) => {
           assert(typeof error === 'undefined');
           resolve();
         });
@@ -1177,12 +1159,8 @@ describe('kt-client', () => {
         client.set('test_key', 'test_value', resolve);
       });
 
-      const options = {
-        oval: 'test_value',
-      };
-
       await new Promise((resolve) => {
-        client.cas('test_key', options, (error) => {
+        client.cas('test_key', 'test_value', undefined, (error) => {
           assert(typeof error === 'undefined');
           resolve();
         });
@@ -1203,13 +1181,8 @@ describe('kt-client', () => {
         client.set('test_key', 'test_value', resolve);
       });
 
-      const options = {
-        oval: 'difference_value',
-        nval: 'new_value',
-      };
-
       await new Promise((resolve) => {
-        client.cas('test_key', options, (error) => {
+        client.cas('test_key', 'difference_value', 'new_value', (error) => {
           assert(typeof error === 'undefined');
           resolve();
         });
@@ -1225,28 +1198,25 @@ describe('kt-client', () => {
 
     it('specify DB', async (done) => {
       const client = new KyotoTocoon();
-
-      await new Promise((resolve) => {
-        client.set('test_key', 'test_value', { db: 'blue' }, resolve);
-      });
-
       const options = {
         db: 'blue',
-        oval: 'test_value',
-        nval: 'new_value',
       };
 
       await new Promise((resolve) => {
-        client.cas('test_key', options, (error) => {
+        client.set('test_key', 'test_value', options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.cas('test_key', 'test_value', 'new_value', options, (error) => {
           assert(typeof error === 'undefined');
           resolve();
         });
       });
 
-      client.get('test_key', { db: 'blue' }, (error, value, expire) => {
+      client.get('test_key', options, (error, value, expire) => {
         assert(value === 'new_value');
         assert(typeof expire === 'undefined');
-        assert(error === 'No record was found');
+        assert(typeof error === 'undefined');
         done();
       });
     });
@@ -1254,18 +1224,16 @@ describe('kt-client', () => {
     it('expiration time', async (done) => {
       const client = new KyotoTocoon();
 
-      await new Promise((resolve) => {
-        client.set('test_key', 'test_value', { expire: 300 }, resolve);
-      });
-
       const options = {
         expire: 300,
-        oval: 'test_value',
-        nval: 'new_value',
       };
 
       await new Promise((resolve) => {
-        client.cas('test_key', options, (error) => {
+        client.set('test_key', 'test_value', options, resolve);
+      });
+
+      await new Promise((resolve) => {
+        client.cas('test_key', 'test_value', 'new_value', options, (error) => {
           assert(typeof error === 'undefined');
           resolve();
         });
@@ -1274,7 +1242,7 @@ describe('kt-client', () => {
       client.get('test_key', (error, value, expire) => {
         assert(value === 'new_value');
         assert(expire instanceof Date);
-        assert(error === 'No record was found');
+        assert(typeof error === 'undefined');
         done();
       });
     });
@@ -1285,7 +1253,7 @@ describe('kt-client', () => {
         port: 9999,
       });
 
-      client.cas('test_key', (error) => {
+      client.cas('test_key', 'test_value', 'new_value', (error) => {
         assert(error === 'Connection error');
         done();
       });

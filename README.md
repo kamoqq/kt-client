@@ -162,7 +162,7 @@ kt.append(key, value, function (error) {
 });
 ```
 
-### kt.increment(key, value, options, callback)
+### kt.increment(key, num, options, callback)
 
 * `key`: **String** the name of the key
 * `num`: **Number** the additional number
@@ -175,7 +175,7 @@ kt.increment(key, num, function (error, num) {
 });
 ```
 
-### kt.incrementDouble(key, value, options, callback)
+### kt.incrementDouble(key, num, options, callback)
 
 * `key`: **String** the name of the key
 * `num`: **Number** the additional number

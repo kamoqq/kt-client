@@ -1183,7 +1183,7 @@ describe('kt-client', () => {
 
       await new Promise((resolve) => {
         client.cas('test_key', 'difference_value', 'new_value', (error) => {
-          assert(typeof error === 'undefined');
+          assert(error === 'The old value assumption was failed');
           resolve();
         });
       });
@@ -1191,7 +1191,7 @@ describe('kt-client', () => {
       client.get('test_key', (error, value, expire) => {
         assert(value === 'test_value');
         assert(typeof expire === 'undefined');
-        assert(error === 'The old value assumption was failed');
+        assert(typeof error === 'undefined');
         done();
       });
     });

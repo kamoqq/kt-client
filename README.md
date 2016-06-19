@@ -188,6 +188,20 @@ kt.incrementDouble(key, num, function (error, num) {
 });
 ```
 
+### kt.cas(key, oldValue, newValue, options, callback)
+
+* `key`: **String** the name of the key
+* `oldValue`: **Mixed** the old value
+* `newValue`: **Mixed** the new value
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.cas(key, oldValue, newValue, function (error) {
+  console.log(err);
+});
+```
+
 ### kt.check(key, options, callback)
 
 * `key`: **String** the name of the key

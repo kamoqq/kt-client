@@ -1190,8 +1190,8 @@ describe('kt-client', () => {
 
       client.get('test_key', (error, value, expire) => {
         assert(value === 'test_value');
-        assert(expire === null);
-        assert(typeof error === 'undefined');
+        assert(typeof expire === 'undefined');
+        assert(error === 'The old value assumption was failed');
         done();
       });
     });

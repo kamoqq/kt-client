@@ -162,7 +162,7 @@ kt.append(key, value, function (error) {
 });
 ```
 
-### kt.increment(key, value, options, callback)
+### kt.increment(key, num, options, callback)
 
 * `key`: **String** the name of the key
 * `num`: **Number** the additional number
@@ -175,7 +175,7 @@ kt.increment(key, num, function (error, num) {
 });
 ```
 
-### kt.incrementDouble(key, value, options, callback)
+### kt.incrementDouble(key, num, options, callback)
 
 * `key`: **String** the name of the key
 * `num`: **Number** the additional number
@@ -185,6 +185,20 @@ kt.increment(key, num, function (error, num) {
 ```javascript
 kt.incrementDouble(key, num, function (error, num) {
   console.log(num);
+});
+```
+
+### kt.cas(key, oldValue, newValue, options, callback)
+
+* `key`: **String** the name of the key
+* `oldValue`: **Mixed** the old value
+* `newValue`: **Mixed** the new value
+* `options`: **Object** options
+* `callback`: **Function** the callback
+
+```javascript
+kt.cas(key, oldValue, newValue, function (error) {
+  console.log(err);
 });
 ```
 

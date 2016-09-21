@@ -1,5 +1,3 @@
-require('babel-polyfill');
-
 import assert from 'power-assert';
 import KyotoTocoon from '../index';
 

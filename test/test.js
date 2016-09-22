@@ -23,18 +23,20 @@ describe('kt-client', () => {
       clear(done);
     });
 
-    it('data', async (done) => {
+    it('data', async () => {
       const client = new KyotoTocoon();
 
       await new Promise((resolve) => {
         client.set('test_key', 'test_value', resolve);
       });
 
-      client.get('test_key', (error, value, expire) => {
-        assert(value === 'test_value');
-        assert(typeof expire === 'undefined');
-        assert(typeof error === 'undefined');
-        done();
+      return new Promise((resolve) => {
+        client.get('test_key', (error, value, expire) => {
+          assert(value === 'test_value');
+          assert(typeof expire === 'undefined');
+          assert(typeof error === 'undefined');
+          resolve();
+        });
       });
     });
 

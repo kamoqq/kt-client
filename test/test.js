@@ -34,7 +34,7 @@ describe('kt-client', () => {
         client.get('test_key', (error, value, expire) => {
           assert(value === 'test_value');
           assert(typeof expire === 'undefined');
-          assert(typeof error === 'undefined');
+          assert(typeof error === 'undefine');
           resolve();
         });
       });

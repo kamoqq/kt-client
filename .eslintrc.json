@@ -8,7 +8,6 @@
   },
   "rules": {
     "class-methods-use-this": 0,
-    "no-plusplus": 0,
     "no-prototype-builtins": 0,
     "id-length": 0,
     "no-underscore-dangle": 0,

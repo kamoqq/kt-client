@@ -1,4 +1,4 @@
-require('babel-polyfill');
+import 'babel-polyfill';
 
 import assert from 'power-assert';
 import KyotoTocoon from '../index';
@@ -597,7 +597,7 @@ describe('kt-client', () => {
 
       client.report((error, data) => {
         assert(typeof data === 'object');
-        assert(data.hasOwnProperty('conf_os_name'));
+        assert(Object.prototype.hasOwnProperty.call(data, 'conf_os_name'));
         assert(data.conf_os_name === 'Linux');
         assert(typeof error === 'undefined');
         done();

@@ -34,7 +34,7 @@
   "homepage": "https://github.com/kamoqq/node-kt-client",
   "devDependencies": {
     "babel-core": "^6.17.0",
-    "babel-eslint": "^6.1.2",
+    "babel-eslint": "^7.1.1",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-polyfill": "^6.16.0",
     "babel-preset-latest": "^6.16.0",

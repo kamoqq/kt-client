@@ -9,7 +9,6 @@
   "rules": {
     "func-names": 0,
     "prefer-arrow-callback": 0,
-    "prefer-template": 0,
     "no-plusplus": 0,
     "comma-dangle": 0,
     "no-prototype-builtins": 0,

@@ -31,6 +31,7 @@ before_install:
   # start kyototycoon
   - /usr/local/bin/ktserver -host localhost -port 1978 -dmn red#type=% blue#type=*
 
-test:
+script:
+  - npm run lint
   - npm test
   - npm run cover

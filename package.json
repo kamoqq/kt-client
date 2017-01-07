@@ -5,19 +5,8 @@
   "main": "index.js",
   "scripts": {
     "pretest": "eslint index.js ./lib ./test",
-    "test": "NODE_ENV=test YOURPACKAGE_COVERAGE=1 mocha --require blanket --reporter mocha-lcov-reporter ./test | coveralls; mocha ./test"
-  },
-  "config": {
-    "blanket": {
-      "pattern": [
-        "index.js",
-        "lib"
-      ],
-      "data-cover-never": [
-        "node_modules",
-        "test"
-      ]
-    }
+    "test": "NODE_ENV=test mocha ./test",
+    "cover": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -41,13 +30,13 @@
     "babel-preset-power-assert": "^1.0.0",
     "babel-register": "^6.16.3",
     "babel-runtime": "^6.11.6",
-    "blanket": "1.1.9",
     "coveralls": "^2.11.14",
     "eslint": "^3.12.2",
     "eslint-config-airbnb-base": "^11.0.0",
     "eslint-plugin-import": "^2.2.0",
     "mocha": "^3.1.0",
     "mocha-lcov-reporter": "^1.2.0",
+    "nyc": "^10.0.0",
     "power-assert": "^1.4.1"
   }
 }

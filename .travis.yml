@@ -30,3 +30,7 @@ before_install:
   - sudo ldconfig
   # start kyototycoon
   - /usr/local/bin/ktserver -host localhost -port 1978 -dmn red#type=% blue#type=*
+
+test:
+  - npm test
+  - npm run cover

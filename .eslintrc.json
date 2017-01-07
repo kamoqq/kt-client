@@ -10,7 +10,6 @@
     "func-names": 0,
     "prefer-arrow-callback": 0,
     "no-plusplus": 0,
-    "comma-dangle": 0,
     "no-prototype-builtins": 0,
     "id-length": 0,
     "no-underscore-dangle": 0,

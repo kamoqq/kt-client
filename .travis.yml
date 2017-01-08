@@ -33,5 +33,4 @@ before_install:
 
 script:
   - npm run lint
-  - npm test
   - npm run cover

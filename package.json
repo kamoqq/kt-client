@@ -36,6 +36,6 @@
     "eslint-plugin-import": "^2.2.0",
     "mocha": "^3.2.0",
     "nyc": "^10.0.0",
-    "power-assert": "^1.4.1"
+    "power-assert": "^1.4.2"
   }
 }

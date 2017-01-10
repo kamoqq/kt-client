@@ -1,4 +1,5 @@
 # kt-client
+[![NPM version](https://img.shields.io/npm/v/kt-client.svg)](https://www.npmjs.com/package/kt-client)
 [![Build Status](https://travis-ci.org/kamoqq/node-kt-client.svg?branch=master)](https://travis-ci.org/kamoqq/node-kt-client)
 [![Coverage Status](https://coveralls.io/repos/kamoqq/node-kt-client/badge.svg?branch=master)](https://coveralls.io/r/kamoqq/node-kt-client?branch=master)
 [![Dependency Status](https://david-dm.org/kamoqq/node-kt-client.svg)](https://david-dm.org/kamoqq/node-kt-client)

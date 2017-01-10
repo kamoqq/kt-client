@@ -1,11 +1,14 @@
 {
-  "extends": "airbnb-base/legacy",
+  "extends": "airbnb-base",
   "env": {
     "node": true
   },
+  "parserOptions": {
+    "sourceType": "script"
+  },
   "rules": {
-    "func-names": 0,
-    "vars-on-top": 0,
+    "class-methods-use-this": 0,
+    "no-prototype-builtins": 0,
     "id-length": 0,
     "no-underscore-dangle": 0,
     "strict": [2, "global"]

@@ -22,6 +22,7 @@ before_install:
   - tar zxvf kyototycoon-0.9.56.tar.gz
   - cd kyototycoon-0.9.56
   - ./configure CXXFLAGS='-mno-avx'
+  - sed -i -e "/^#include <kttimeddb.h>$/a #include <unistd.h>" ./ktdbext.h
   - make
   - sudo make install
   - cd -

@@ -82,7 +82,7 @@ describe('kt-client', () => {
 
     it('binary data', async () => {
       const client = new KyotoTocoon();
-      const testValue = new Buffer('test_value');
+      const testValue = Buffer.from('test_value');
       const options = {
         encoding: 'binary',
       };
@@ -250,7 +250,7 @@ describe('kt-client', () => {
 
     it('binary data', async () => {
       const client = new KyotoTocoon();
-      const testValue = new Buffer('test_value');
+      const testValue = Buffer.from('test_value');
       const options = {
         encoding: 'binary',
       };
@@ -1627,8 +1627,8 @@ describe('kt-client', () => {
         encoding: 'binary',
       };
       const testData = {
-        test_key1: new Buffer([1, 2, 3]),
-        test_key2: new Buffer([4, 5, 6]),
+        test_key1: Buffer.from([1, 2, 3]),
+        test_key2: Buffer.from([4, 5, 6]),
       };
 
       await new Promise((resolve) => {
@@ -1945,11 +1945,11 @@ describe('kt-client', () => {
       };
 
       await new Promise((resolve) => {
-        client.set('test_key1', new Buffer([1, 2, 3]), options, resolve);
+        client.set('test_key1', Buffer.from([1, 2, 3]), options, resolve);
       });
 
       await new Promise((resolve) => {
-        client.set('test_key2', new Buffer([4, 5, 6]), options, resolve);
+        client.set('test_key2', Buffer.from([4, 5, 6]), options, resolve);
       });
 
       return new Promise((resolve) => {

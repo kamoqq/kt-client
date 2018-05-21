@@ -16,8 +16,8 @@ npm install kt-client
 ## Setting up the client
 
 ```javascript
-var KyotoTycoon = require('kt-client');
-var kt = new KyotoTycoon(options);
+const KyotoTycoon = require('kt-client');
+const kt = new KyotoTycoon(options);
 ```
 
 ### Options
@@ -34,7 +34,7 @@ var kt = new KyotoTycoon(options);
 * `callback`: **Function** the callback
 
 ```javascript
-kt.get('foo', function (error, value) {
+kt.get('foo', (error, value) => {
   console.log(value);
 });
 ```
@@ -47,7 +47,7 @@ kt.get('foo', function (error, value) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.set('foo', 'bar', function (error) {
+kt.set('foo', 'bar', (error) => {
   console.log(error);
 });
 ```
@@ -60,7 +60,7 @@ kt.set('foo', 'bar', function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.add('foo', 'bar', function (error) {
+kt.add('foo', 'bar', (error) => {
   console.log(error);
 });
 ```
@@ -73,7 +73,7 @@ kt.add('foo', 'bar', function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.replace('foo', 'bar', function (error) {
+kt.replace('foo', 'bar', (error) => {
   console.log(error);
 });
 ```
@@ -84,7 +84,7 @@ kt.replace('foo', 'bar', function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.remove('foo', function (error) {
+kt.remove('foo', (error) => {
   console.log(error);
 });
 ```
@@ -94,7 +94,7 @@ kt.remove('foo', function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.void(function (error) {
+kt.void((error) => {
   console.log(error);
 });
 ```
@@ -105,7 +105,7 @@ kt.void(function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.echo({foo: 'bar'}, function (error, data) {
+kt.echo({foo: 'bar'}, (error, data) => {
   console.log(data.foo);  // => bar
 });
 ```
@@ -115,12 +115,10 @@ kt.echo({foo: 'bar'}, function (error, data) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.report(function (error, data) {
-  for (var key in data) {
-    if (data.hasOwnProperty(key)) {
-      console.log('key: ' + key + ', value: ' data[key]);      
-    }
-  }
+kt.report((error, data) => {
+  Object.keys(data).forEach((key) => {
+    console.log(`key: ${key}, value: ${data[key]}`);
+  });
 });
 ```
 
@@ -130,12 +128,10 @@ kt.report(function (error, data) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.status(function (error, data) {
-  for (var key in data) {
-    if (data.hasOwnProperty(key)) {
-      console.log('key: ' + key + ', value: ' data[key]);      
-    }
-  }
+kt.status((error, data) => {
+  Object.keys(data).forEach((key) => {
+    console.log(`key: ${key}, value: ${data[key]}`);
+  });
 });
 ```
 
@@ -145,7 +141,7 @@ kt.status(function (error, data) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.clear(function (error) {
+kt.clear((error) => {
   console.log(error);
 });
 ```
@@ -158,7 +154,7 @@ kt.clear(function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.append(key, value, function (error) {
+kt.append(key, value, (error) => {
   console.log(error);
 });
 ```
@@ -171,7 +167,7 @@ kt.append(key, value, function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.increment(key, num, function (error, num) {
+kt.increment(key, num, (error, num) => {
   console.log(num);
 });
 ```
@@ -184,7 +180,7 @@ kt.increment(key, num, function (error, num) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.incrementDouble(key, num, function (error, num) {
+kt.incrementDouble(key, num, (error, num) => {
   console.log(num);
 });
 ```
@@ -198,7 +194,7 @@ kt.incrementDouble(key, num, function (error, num) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.cas(key, oldValue, newValue, function (error) {
+kt.cas(key, oldValue, newValue, (error) => {
   console.log(err);
 });
 ```
@@ -210,7 +206,7 @@ kt.cas(key, oldValue, newValue, function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.check(key, function (error, size, expire) {
+kt.check(key, (error, size, expire) => {
   console.log(size);
   console.log(expire);
 });
@@ -223,7 +219,7 @@ kt.check(key, function (error, size, expire) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.seize(key, function (error, value, expire) {
+kt.seize(key, (error, value, expire) => {
   console.log(value);
   console.log(expire);
 });
@@ -236,7 +232,7 @@ kt.seize(key, function (error, value, expire) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.setBulk(records, function (error) {
+kt.setBulk(records, (error) => {
   console.log(error);
 });
 ```
@@ -248,7 +244,7 @@ kt.setBulk(records, function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.removeBulk(keys, function (error) {
+kt.removeBulk(keys, (error) => {
   console.log(error);
 });
 ```
@@ -260,7 +256,7 @@ kt.removeBulk(keys, function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.getBulk(keys, function (error, ret) {
+kt.getBulk(keys, (error, ret) => {
   console.log(ret.key);
 });
 ```
@@ -271,7 +267,7 @@ kt.getBulk(keys, function (error, ret) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.vacuum(function (error) {
+kt.vacuum((error) => {
   console.log(error);
 });
 ```
@@ -283,10 +279,10 @@ kt.vacuum(function (error) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.matchPrefix('foo', function (error, data) {
-  for (var i = 0; i < data.length; ++i) {
-    console.log(data[i]);
-  }
+kt.matchPrefix('foo', (error, data) => {
+  data.forEach((v) => {
+    console.log(v);
+  });
 });
 ```
 
@@ -297,10 +293,10 @@ kt.matchPrefix('foo', function (error, data) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.matchRegex('foo.*', function (error, data) {
-  for (var i = 0; i < data.length; ++i) {
-    console.log(data[i]);
-  }
+kt.matchRegex('foo.*', (error, data) => {
+  data.forEach((v) => {
+    console.log(v);
+  });
 });
 ```
 
@@ -311,10 +307,10 @@ kt.matchRegex('foo.*', function (error, data) {
 * `callback`: **Function** the callback
 
 ```javascript
-kt.matchSimilar('foo', function (error, data) {
-  for (var i = 0; i < data.length; ++i) {
-    console.log(data[i]);
-  }
+kt.matchSimilar('foo', (error, data) => {
+  data.forEach((v) => {
+    console.log(v);
+  });
 });
 ```
 

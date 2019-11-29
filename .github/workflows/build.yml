@@ -8,32 +8,56 @@ jobs:
     strategy:
       matrix:
         node: [8, 10, 12]
+    env:
+      KYOTOCABINET_VERSION: "1.2.77"
+      KYOTOTYCOON_VERSION: "0.9.56"
     steps:
       - uses: actions/checkout@master
         with:
           fetch-depth: 1
-      - name: Setup KyotoTycoon
-        env:
-          KYOTOCABINET_VERSION: "1.2.77"
-          KYOTOTYCOON_VERSION: "0.9.56"
+      - name: Restore KyotoCabinet build cache
+        id: cache-kc
+        uses: actions/cache@v1
+        with:
+          path: kyotocabinet-${KYOTOCABINET_VERSION}
+          key: ${{ runner.os }}-kc-${KYOTOCABINET_VERSION}
+      - name: Restore KyotoTycoon build cache
+        id: cache-kt
+        uses: actions/cache@v1
+        with:
+          path: kyototycoon-${KYOTOTYCOON_VERSION}
+          key: ${{ runner.os }}-kt-${KYOTOTYCOON_VERSION}
+      - name: Setup dependencies
         run: |
           sudo apt-get update
           sudo apt-get install g++ zlib1g-dev
+      - name: Build KyotoCabinet
+        if: steps.cache-kc.outputs.cache-hit != 'true'
+        run: |
           wget http://fallabs.com/kyotocabinet/pkg/kyotocabinet-${KYOTOCABINET_VERSION}.tar.gz
           tar zxvf kyotocabinet-${KYOTOCABINET_VERSION}.tar.gz
           cd kyotocabinet-${KYOTOCABINET_VERSION}
           ./configure
           make
+      - name: Install KyotoCabinet
+        run: |
+          cd kyotocabinet-${KYOTOCABINET_VERSION}
           sudo make install
-          cd -
+      - name: Build KyotoTycoon
+        if: steps.cache-kc.outputs.cache-hit != 'true'
+        run: |
           wget http://fallabs.com/kyototycoon/pkg/kyototycoon-${KYOTOTYCOON_VERSION}.tar.gz
           tar zxvf kyototycoon-${KYOTOTYCOON_VERSION}.tar.gz
           cd kyototycoon-${KYOTOTYCOON_VERSION}
           ./configure
           sed -i -e "/^#include <kttimeddb.h>$/a \#include <unistd.h>" ./ktdbext.h
           make
+      - name: Install KyotoTycoon
+        run: |
+          cd kyototycoon-${KYOTOTYCOON_VERSION}
           sudo make install
-          /usr/local/bin/ktserver -host localhost -port 1978 -dmn red#type=% blue#type=*
+      - name: Start KyotoTycoon
+        run: /usr/local/bin/ktserver -host localhost -port 1978 -dmn red#type=% blue#type=*
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:

@@ -1,6 +1,6 @@
 {
   "name": "kt-client",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "KyotoTycoon client for Node.js",
   "main": "index.js",
   "scripts": {

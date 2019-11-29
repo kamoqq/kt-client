@@ -1,12 +1,12 @@
 {
   "name": "kt-client",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "KyotoTycoon client for Node.js",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js ./lib ./test",
     "test": "NODE_ENV=test mocha ./test",
-    "cover": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
+    "cover": "nyc npm test && nyc report --reporter=lcov --reporter=text"
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,6 @@
     "babel-preset-power-assert": "^2.0.0",
     "babel-register": "^6.26.0",
     "babel-runtime": "^6.26.0",
-    "coveralls": "^2.11.14",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",

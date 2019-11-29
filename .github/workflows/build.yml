@@ -72,6 +72,10 @@ jobs:
         run: npm run lint
       - name: Test
         run: npm run cover
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: publish
         if: contains(github.ref, 'master')
         run: npm publish

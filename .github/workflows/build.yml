@@ -9,8 +9,8 @@ jobs:
       matrix:
         node: [8, 10, 12]
     env:
-      KYOTOCABINET_VERSION: "1.2.77"
-      KYOTOTYCOON_VERSION: "0.9.56"
+      KYOTOCABINET_VERSION: '1.2.77'
+      KYOTOTYCOON_VERSION: '0.9.56'
     steps:
       - uses: actions/checkout@master
         with:
@@ -76,8 +76,3 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: publish
-        if: contains(github.ref, 'master')
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

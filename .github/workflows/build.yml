@@ -1,0 +1,50 @@
+name: build
+on: push
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-16.04
+    strategy:
+    matrix:
+      node: [8, 10, 12]
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+      - name: Setup KyotoTycoon
+        env:
+          KYOTOCABINET_VERSION: "1.2.77"
+          KYOTOTYCOON_VERSION: "0.9.56"
+        run: |
+          sudo apt-get update
+          sudo apt-get install g++ zlib1g-dev
+          wget http://fallabs.com/kyotocabinet/pkg/kyotocabinet-${KYOTOCABINET_VERSION}.tar.gz
+          tar zxvf kyotocabinet-${KYOTOCABINET_VERSION}.tar.gz
+          cd kyotocabinet-${KYOTOCABINET_VERSION}
+          ./configure
+          make
+          sudo make install
+          cd -
+          wget http://fallabs.com/kyototycoon/pkg/kyototycoon-${KYOTOTYCOON_VERSION}.tar.gz
+          tar zxvf kyototycoon-${KYOTOTYCOON_VERSION}.tar.gz
+          cd kyototycoon-${KYOTOTYCOON_VERSION}
+          ./configure
+          make
+          sudo make install
+          /usr/local/bin/ktserver -host localhost -port 1978 -dmn red#type=% blue#type=*
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install
+        run: npm install
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm run cover
+      - name: publish
+        if: contains(github.ref, 'master')
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

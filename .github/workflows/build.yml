@@ -30,6 +30,7 @@ jobs:
           tar zxvf kyototycoon-${KYOTOTYCOON_VERSION}.tar.gz
           cd kyototycoon-${KYOTOTYCOON_VERSION}
           ./configure
+          sed -i -e "/^#include <kttimeddb.h>$/a \#include <unistd.h>" ./ktdbext.h
           make
           sudo make install
           /usr/local/bin/ktserver -host localhost -port 1978 -dmn red#type=% blue#type=*

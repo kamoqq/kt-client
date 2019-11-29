@@ -56,6 +56,10 @@ jobs:
         run: |
           cd kyototycoon-${KYOTOTYCOON_VERSION}
           sudo make install
+      - name: Setup library path
+        run: |
+          sudo sh -c "echo '/usr/local/lib' >> /etc/ld.so.conf.d/libc.conf"
+          sudo ldconfig
       - name: Start KyotoTycoon
         run: /usr/local/bin/ktserver -host localhost -port 1978 -dmn red#type=% blue#type=*
       - name: Setup Node.js

@@ -19,14 +19,14 @@ jobs:
         id: cache-kc
         uses: actions/cache@v1
         with:
-          path: kyotocabinet-${KYOTOCABINET_VERSION}
-          key: ${{ runner.os }}-kc-${KYOTOCABINET_VERSION}
+          path: kyotocabinet-${{ env.KYOTOCABINET_VERSION }}
+          key: ${{ runner.os }}-kc-${{ env.KYOTOCABINET_VERSION }}
       - name: Restore KyotoTycoon build cache
         id: cache-kt
         uses: actions/cache@v1
         with:
-          path: kyototycoon-${KYOTOTYCOON_VERSION}
-          key: ${{ runner.os }}-kt-${KYOTOTYCOON_VERSION}
+          path: kyototycoon-${{ env.KYOTOTYCOON_VERSION }}
+          key: ${{ runner.os }}-kt-${{ env.KYOTOTYCOON_VERSION }}
       - name: Setup dependencies
         run: |
           sudo apt-get update

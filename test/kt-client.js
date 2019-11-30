@@ -18,8 +18,8 @@ async function clear() {
   });
 }
 
-test.beforeEach(async (t) => {
-  await clear(t.end);
+test.beforeEach(async () => {
+  clear();
 });
 
 test.serial('[get] data', async (t) => {

@@ -652,22 +652,6 @@ test.serial('[status] connection error', async (t) => {
   });
 });
 
-
-test.serial('[status] connection error', async (t) => {
-  const client = new KyotoTocoon({
-    host: 'localhost',
-    port: 9999,
-  });
-
-  return new Promise((resolve) => {
-    client.status((error, data) => {
-      t.is(data, undefined);
-      t.is(error, 'Connection error');
-      resolve();
-    });
-  });
-});
-
 test.serial('[clear] clear', async (t) => {
   const client = new KyotoTocoon();
 

@@ -1107,7 +1107,7 @@ test.serial('[incrementDouble] expiration time', async (t) => {
 
   return new Promise((resolve) => {
     client.get('test_key', (error, value, expire) => {
-      t.is(typeof value !== 'undefined');
+      t.assert(typeof value !== 'undefined');
       t.assert(expire instanceof Date);
       t.is(error, undefined);
       resolve();

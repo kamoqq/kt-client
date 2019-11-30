@@ -349,26 +349,6 @@ test.serial('[add] data', async (t) => {
   });
 });
 
-test.serial('[add] data', async (t) => {
-  const client = new KyotoTocoon();
-
-  await new Promise((resolve) => {
-    client.add('test_key', 'test_value', (error) => {
-      t.is(error, undefined);
-      resolve();
-    });
-  });
-
-  return new Promise((resolve) => {
-    client.get('test_key', (error, value, expire) => {
-      t.is(value, 'test_value');
-      t.is(expire, undefined);
-      t.is(error, undefined);
-      resolve();
-    });
-  });
-});
-
 test.serial('[add] already exists', async (t) => {
   const client = new KyotoTocoon();
 
